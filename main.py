@@ -105,7 +105,7 @@ root.geometry("400x400")
 root.title("Main")
 root.resizable(False, False)
 
-# Κουμί για νέο παιχνίδι
+# Κουμπί για νέο παιχνίδι
 btn_new_game = Button(root, text="New Game", command=millioner)
 # Κουμπί για εμφάνιση του πίνακα κατάταξης
 btn_rank = Button(root, text="Rank", command=rank)
