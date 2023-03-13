@@ -8,37 +8,7 @@ from PIL import ImageTk, Image
 # Εδώ αρχίζει το παιχνίδι
 def millioner():
 
-    # Συνολικός χρόνος παιχνιδιού
-    total_time = 0
-    # Συνολικό score παίχτη
-    total_score = 0
-    # Τρέχουσα σειράερώτησης
-    position = 1
-
-    # Έχω δημιουργήσει μία βάση δεδομένων millionerdb.db που περιέχει δύο πίνακες
-    # Πίνακας questions_table (question, ansewera, answerb, answerc, answerd, dificulty)
-    # Πίνακας rank_table (name, score)
-
-    # Από τη βάση δεδομένων φτιάχνω τρεις λίστες ανάλογα τη δυσκολία των ερωτήσεων
-    conn = sqlite3.connect('millionerdb.db')
-    c = conn.cursor()
-    c.execute("SELECT *  FROM questions_table WHERE dificulty = 'easy'")
-    questions_easy = c.fetchall()
-    c.execute("SELECT *  FROM questions_table WHERE dificulty = 'medium'")
-    questions_medium = c.fetchall()
-    c.execute("SELECT *  FROM questions_table WHERE dificulty = 'hard'")
-    questions_hard = c.fetchall()
-    conn.commit()
-    conn.close()
-
-    # Στη λίστα question βάζω μία τυχαία ερώτηση από τις εύκολες ερωτήσεις
-    random_num = random.randrange(0, len(questions_easy) - 1)
-    question = questions_easy[random_num]
-    questions_easy.pop(random_num)
-
-
-
-    # Εισάγω νέα ερώτηση στο παιχνίδι
+     # Εισάγω νέα ερώτηση στο παιχνίδι
     def new_question():
         # Εισάγω μία τυχαία ερώτηση στη λίστα question ανάλογα το επίπεδο δυσκολίας που βρίσκεται ο παίχτης
         pass
@@ -53,7 +23,6 @@ def millioner():
         # κρατάει στοιχεία όπως συνολικός χρόνος και κερδισμένο ποσό
         # αυξάνει το position κατά 1
         pass
-
 
 
     def give_answer(answer):
@@ -88,8 +57,39 @@ def millioner():
 
     def start_game_gui():
         # Ξεκινάει το παιχνίδι και φτιάχνει το GUI.
+        # Περιέχεται ένα κουμπί για κάθε βοήθεια
+        # Περιέχονται 4 κουμπιά ένα για κάθε απάντηση. με εντολή give_answer(answer) όπου answer έιναι η απάντηση του κουμπιού
         # Προσοχή! Θέλουμε και ένα χρονόμετρο 60sec που θα χάνει ο παίχτης αν δεν απαντήσει εγκαίρως
         pass
+
+        # Συνολικός χρόνος παιχνιδιού
+
+    total_time = 0
+    # Συνολικό score παίχτη
+    total_score = 0
+    # Τρέχουσα σειράερώτησης
+    position = 1
+
+    # Έχω δημιουργήσει μία βάση δεδομένων millionerdb.db που περιέχει δύο πίνακες
+    # Πίνακας questions_table (question, ansewera, answerb, answerc, answerd, dificulty)
+    # Πίνακας rank_table (name, score)
+
+    # Από τη βάση δεδομένων φτιάχνω τρεις λίστες ανάλογα τη δυσκολία των ερωτήσεων
+    conn = sqlite3.connect('millionerdb.db')
+    c = conn.cursor()
+    c.execute("SELECT *  FROM questions_table WHERE dificulty = 'easy'")
+    questions_easy = c.fetchall()
+    c.execute("SELECT *  FROM questions_table WHERE dificulty = 'medium'")
+    questions_medium = c.fetchall()
+    c.execute("SELECT *  FROM questions_table WHERE dificulty = 'hard'")
+    questions_hard = c.fetchall()
+    conn.commit()
+    conn.close()
+
+    # Στη λίστα question βάζω μία τυχαία ερώτηση από τις εύκολες ερωτήσεις
+    random_num = random.randrange(0, len(questions_easy) - 1)
+    question = questions_easy[random_num]
+    questions_easy.pop(random_num)
 
     start_game_gui()
 
