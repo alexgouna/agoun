@@ -44,6 +44,7 @@ def millioner():
     timer = 600
     position = 1
 
+    # Εισάγω νέα ερώτηση στο παιχνίδι
     def new_question():
         global question
         global questions_easy
@@ -164,7 +165,7 @@ def millioner():
             btnanswerc.config(state=DISABLED)
         if not (num1 == 4 or num2 == 4):
             btnanswerd.config(state=DISABLED)
-        btnhelp1.config(command="", image=img_help_50_x, padx=50, pady=20)
+        btnhelp1.config(command="", state=DISABLED)
 
     def pc_answer(bonus):
         num = (random.random(), random.random(), random.random(), random.random())
@@ -194,18 +195,23 @@ def millioner():
 
     # help propose an answer
     def help2():
-        global position
         global btnhelp2
 
         print("help2")
         if position <= 5:
-            my_pc_answer = pc_answer(25)
+            my_pc_answer = pc_answer(30)
         elif position <= 10:
             my_pc_answer = pc_answer(20)
         else:
             my_pc_answer = pc_answer(15)
-        print(my_pc_answer)
-        btnhelp2.config(command="", image=img_help_percent_x, padx=50, pady=20)
+
+        root_help2 = Toplevel()
+        root_help2.title = "Ποσοστό κοινού"
+        root_help2.geometry("300x100")
+        lbl_mylabel = Label(root_help2,text="Με ποσοστό " + str(int(my_pc_answer[0])) + "% δίνεται η απάντηση: \n" + str(my_pc_answer[1]))
+        lbl_mylabel.pack()
+        mainloop()
+        btnhelp2.config(state=DISABLED)
 
     def help3():
         global btnhelp3
@@ -217,7 +223,7 @@ def millioner():
         btnanswerb.config(text=question[2], state=NORMAL)
         btnanswerc.config(text=question[3], state=NORMAL)
         btnanswerd.config(text=question[4], state=NORMAL)
-        btnhelp3.config(command="", image=img_help_change_x, padx=50, pady=20)
+        btnhelp3.config(command="", state=DISABLED)
 
     def start_game():
         global lbl_timer
@@ -255,16 +261,6 @@ def millioner():
     lframe.grid(row=0, column=0)
     rframe.grid(row=0, column=1)
 
-    img_help_50 = ImageTk.PhotoImage(Image.open("images/50.png"))
-    img_help_50_x = ImageTk.PhotoImage(Image.open("images/50_x.png"))
-    img_help_change = ImageTk.PhotoImage(Image.open("images/change.png"))
-    img_help_change_x = ImageTk.PhotoImage(Image.open("images/change_x.png"))
-    img_help_percent = ImageTk.PhotoImage(Image.open("images/percent.png"))
-    img_help_percent_x = ImageTk.PhotoImage(Image.open("images/percent_x.png"))
-    img_answer = ImageTk.PhotoImage(Image.open("images/123.png"))
-    img_questions = ImageTk.PhotoImage(Image.open("images/questions.png"))
-
-
     # lframe
     toplframe = Frame(lframe, bg="black")
     midlframe = Frame(lframe, bg="blue")
@@ -274,28 +270,25 @@ def millioner():
     botlframe.grid(row=2, column=0)
 
     # toplframe
-    lbl_bg_top_l = Label(toplframe, bg= "black", text="",padx=248, pady=40)
-    lbl_bg_top_l.grid(row=0,column=0,columnspan=3)
-    btnhelp1 = Button(toplframe,bg="black", bd=0,activebackground="black",  image=img_help_50,width=150, height = 80, padx=100, pady=20, command=help1, state=DISABLED)
+    lbl_bg_top_l = Label(toplframe, bg="black", text="", padx=248, pady=40)
+    lbl_bg_top_l.grid(row=0, column=0, columnspan=3)
+    btnhelp1 = Button(toplframe, text="50", bg="red", bd=0, activebackground="black", padx=50, pady=20,
+                      command=help1, state=DISABLED)
     btnhelp1.grid(row=0, column=0)
-    btnhelp2 = Button(toplframe, image=img_help_percent,bg="black", bd=0,activebackground="black", width=150, height = 80, padx=50, pady=20, command=help2, state=DISABLED)
+    btnhelp2 = Button(toplframe, text="percent", bg="red", bd=0, activebackground="black", padx=50, pady=20,
+                      command=help2, state=DISABLED)
     btnhelp2.grid(row=0, column=1)
-    btnhelp3 = Button(toplframe, image=img_help_change, bg="black", bd=0,activebackground="black", width=150, height = 80, padx=50, pady=20,command=help3, state=DISABLED)
+    btnhelp3 = Button(toplframe, text="change", bg="red", bd=0, activebackground="black", padx=50, pady=20,
+                      command=help3, state=DISABLED)
     btnhelp3.grid(row=0, column=2)
 
     # midlframe
     midlframe.config(width=500, height=150)
-    lbl_timer = Label(midlframe, text="00",font=("Arial",50),padx =211, pady = 30, bg="black",fg="white")
+    lbl_timer = Label(midlframe, text="00", font=("Arial", 50), padx=211, pady=30, bg="black", fg="white")
     lbl_timer.grid(row=0, column=0)
 
     # botlframe
     botlframe.config(width=500, height=350)
-    lbl_img_questions = Label(botlframe,image=img_questions,padx=20,pady=50)
-    # lbl_img_answer = Label(botlframe, image=img_answer,padx=20,pady=50)
-    #
-    # l_img_questions.grid(row=0,column=0)
-    # lbl_img_answer.grid(row=1, column=0)
-
     lblquestion = Label(botlframe, text=question[0], bg="black", fg="white")
     btnanswera = Button(botlframe, text=question[1], bg="black", fg="white", command=lambda: give_answer("A"))
     btnanswerb = Button(botlframe, text=question[2], bg="black", fg="white", command=lambda: give_answer("B"))
@@ -362,7 +355,7 @@ def edit_questions():
     top_lvl = Toplevel()
     top_lvl.title("Edit questions")
     top_lvl.geometry("800x400")
-    #top_lvl.resizable(False, False)
+    # top_lvl.resizable(False, False)
 
     lbl_question = Label(top_lvl, text="Ερώτηση")
     lbl_answer_a = Label(top_lvl, text="Απάντηση Α")
@@ -432,54 +425,16 @@ def edit_questions():
     btn_save.grid(row=my_row, column=0, columnspan=2)
     mainloop()
 
-#
-# conn = sqlite3.connect('millionerdb.db')
-# c = conn.cursor()
-# c.execute("""CREATE TABLE questions_table (
-#             question text,
-#             answer_a text,
-#             answer_b text,
-#             answer_c text,
-#             answer_d text,
-#             answer_correct text,
-#             dificulty text )""")
-# conn.commit()
-# conn.close()
-#
-# conn = sqlite3.connect('millionerdb.db')
-# c = conn.cursor()
-#
-# for row in range(50):
-#     sosto=random.choice(["A","B","C","D"])
-#     diskolia = random.choice(["easy", "medium", "hard"])
-#     c.execute("INSERT INTO questions_table VALUES (?,?,?,?,?,?,?)",
-#           ("Answer "+ diskolia + " " + str(row + 1),
-#            "A","B","C","D",sosto,diskolia))
-# conn.commit()
-# conn.close()
-#
-#
-# conn = sqlite3.connect('millionerdb.db')
-# c = conn.cursor()
-# c.execute("""CREATE TABLE rank_table (
-#             username text,
-#             score integer )""")
-# conn.commit()
-# conn.close()
-
 
 root = Tk()
 root.geometry("400x400")
 root.title("Main")
 root.resizable(False, False)
-#  demo game start
-millioner()
+
 btn_new_game = Button(root, text="New Game", command=millioner)
 btn_rank = Button(root, text="Rank", command=rank)
-btn_edit_questions = Button(root, text="Edit questions", command=edit_questions)
-btn_exit = Button(root, text="EXIT", command=exit)
+
 btn_new_game.grid(row=0, column=0)
 btn_rank.grid(row=1, column=0)
-btn_edit_questions.grid(row=2, column=0)
-btn_exit.grid(row=3, column=0)
+
 mainloop()
