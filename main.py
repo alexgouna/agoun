@@ -5,7 +5,7 @@ import sqlite3
 from PIL import ImageTk, Image
 
 
-# Εδώ αρχίζει το παιχνίδι
+# Εδώ αρχίζει το παιχνίδι!!
 def millioner():
 
      # Εισάγω νέα ερώτηση στο παιχνίδι.
