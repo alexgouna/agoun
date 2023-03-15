@@ -85,13 +85,13 @@ def questions():
     e_correct_answer.grid(row=6, column=1, columnspan=2, pady=4)
     e_difficulty.grid(row=7, column=1, columnspan=2, pady=4)
 
-    def test_if_question_exist(my_question):
+    def test_if_question_exist(my_question, my_question_exception):
         conn = sqlite3.connect('millionerdb.db')
         c = conn.cursor()
         c.execute("SELECT * FROM questions_table")
         questions = c.fetchall()
         for question in questions:
-            if question == my_question:
+            if question[0] == my_question:
                 conn.commit()
                 conn.close()
                 return True
@@ -107,7 +107,7 @@ def questions():
         e_correct_answer.delete(0, END)
         e_difficulty.delete(0, END)
 
-    def delete(line):
+    def clear_tree(line):
         if line == "ALL":
             for record in tree_questions.get_children():
                 tree_questions.delete(record)
@@ -117,8 +117,7 @@ def questions():
                 tree_questions.delete(record)
 
     def add():
-        clear_entries()
-        if not(test_if_question_exist(e_question.get())):
+        if not(test_if_question_exist(str(e_question.get()),"asdf")):
             conn = sqlite3.connect('millionerdb.db')
             c = conn.cursor()
             c.execute("INSERT INTO questions_table VALUES (?,?,?,?,?,?,?)",
@@ -126,13 +125,15 @@ def questions():
                        e_correct_answer.get(), e_difficulty.get()))
             conn.commit()
             conn.close()
+            clear_entries()
+            clear_tree("ALL")
             question_tree_refresh()
         else:
             messagebox.showerror("Error", "Η ερώτηση υπάρχει ήδη!!")
 
     def save():
         global my_selection_question
-        if not (test_if_question_exist(e_question.get())):
+        if not(test_if_question_exist(str(e_question.get()), str(my_selection_question))):
             conn = sqlite3.connect('millionerdb.db')
             c = conn.cursor()
             c.execute("UPDATE questions_table SET question='" + e_question.get()  + "' , answera='" + e_answer_a.get()  +
@@ -142,6 +143,7 @@ def questions():
             conn.commit()
             conn.close()
             clear_entries()
+            clear_tree("ALL")
             question_tree_refresh()
         else:
             messagebox.showerror("Error", "Η ερώτηση υπάρχει ήδη!!")
@@ -160,10 +162,12 @@ def questions():
         e_correct_answer.insert(0, selected_values[5])
         e_difficulty.insert(0, selected_values[6])
 
+
+
     btn_add = Button(root, text="Add", command=add, width=15)
     btn_save = Button(root, text="Save", command=save, width=15)
-    btn_delete_one = Button(root, text="Delete", command=lambda: delete("SELECTED"), width=15)
-    btn_delete_all = Button(root, text="Delete all", command=lambda: delete("ALL"), width=15)
+    btn_delete_one = Button(root, text="Delete", command=lambda: clear_tree("SELECTED"), width=15)
+    btn_delete_all = Button(root, text="Delete all", command=lambda: clear_tree("ALL"), width=15)
 
     btn_add.grid(row=1, column=3)
     btn_save.grid(row=2, column=3)
