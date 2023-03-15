@@ -3,6 +3,7 @@ import random
 import time
 import sqlite3
 from PIL import ImageTk, Image
+from question_button import questions
 
 
 # Εδώ αρχίζει το παιχνίδι!!
@@ -47,7 +48,7 @@ def millioner():
     # help2 PC propose an answer
     def help2():
         # Δώσε μία πιθανή απάντηση με ποσοστό επιτυχίας.
-        # Δεν είναι υποχρεωτικό να επιστρέψει την σωστή απάντηση
+        # Δεν είναι υποχρεωτικό να επιστρέψει τη σωστή απάντηση
         pass
 
     def help3():
@@ -56,10 +57,9 @@ def millioner():
 
 
     def start_game_gui():
-        # Ξεκινάει το παιχνίδι και φτιάχνει το GUI.
-        # Περιέχεται ένα κουμπί για κάθε βοήθεια
-        # Περιέχονται 4 κουμπιά ένα για κάθε απάντηση. με εντολή give_answer(answer) όπου answer έιναι η απάντηση του κουμπιού
-        # Προσοχή! Θέλουμε και ένα χρονόμετρο 60sec που θα χάνει ο παίχτης αν δεν απαντήσει εγκαίρως
+        # Ξεκινάει το παιχνίδι και φτιάχνει το GUI. Περιέχεται ένα κουμπί για κάθε βοήθεια Περιέχονται 4 κουμπιά ένα
+        # για κάθε απάντηση. με εντολή give_answer(answer) όπου answer έιναι η απάντηση του κουμπιού Προσοχή! Θέλουμε
+        # και ένα χρονόμετρο 60sec που θα χάνει ο παίχτης αν δεν απαντήσει εγκαίρως
         pass
 
         # Συνολικός χρόνος παιχνιδιού
@@ -71,17 +71,17 @@ def millioner():
     position = 1
 
     # Έχω δημιουργήσει μία βάση δεδομένων millionerdb.db που περιέχει δύο πίνακες
-    # Πίνακας questions_table (question, ansewera, answerb, answerc, answerd, dificulty)
+    # Πίνακας questions_table (question, ansewera, answerb, answerc, answerd, correct_answer, difficulty)
     # Πίνακας rank_table (name, score)
 
     # Από τη βάση δεδομένων φτιάχνω τρεις λίστες ανάλογα τη δυσκολία των ερωτήσεων
     conn = sqlite3.connect('millionerdb.db')
     c = conn.cursor()
-    c.execute("SELECT *  FROM questions_table WHERE dificulty = 'easy'")
+    c.execute("SELECT *  FROM questions_table WHERE difficulty = 'easy'")
     questions_easy = c.fetchall()
-    c.execute("SELECT *  FROM questions_table WHERE dificulty = 'medium'")
+    c.execute("SELECT *  FROM questions_table WHERE difficulty = 'medium'")
     questions_medium = c.fetchall()
-    c.execute("SELECT *  FROM questions_table WHERE dificulty = 'hard'")
+    c.execute("SELECT *  FROM questions_table WHERE difficulty = 'hard'")
     questions_hard = c.fetchall()
     conn.commit()
     conn.close()
@@ -95,13 +95,13 @@ def millioner():
 
 
 def rank():
-    # Δημιουργεί ένα Toplevel που εμφανίζει από τον πίνακα rank_table το όνομα και τουσ βαθμούς όπως έχουν καταγραφεί έως τώρα.
+    # Δημιουργεί ένα Toplevel που εμφανίζει από τον πίνακα rank_table το όνομα και τουσ βαθμούς όπως έχουν καταγραφεί
+    # έως τώρα.
     pass
 
-def questions():
+def questions2():
     # Θα βρούμε μια λίστα με όλες τις ερωτήσεις και απαντήσεις όπου θα μπορούμε να την επεξεργαστούμε
     pass
-
 
 # αρχική κεντρική οθόνη
 root = Tk()
