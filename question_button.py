@@ -6,6 +6,8 @@ from tkinter import ttk
 from tkinter import messagebox
 from PIL import ImageTk, Image
 
+global my_selection_question
+
 
 def questions():
     # Θα βρούμε μια λίστα με όλες τις ερωτήσεις και απαντήσεις όπου θα μπορούμε να την επεξεργαστούμε
@@ -16,7 +18,7 @@ def questions():
 
     tree_questions = ttk.Treeview(root)
     tree_questions['columns'] = (
-    "question", "ansewera", "answerb", "answerc", "answerd", "correct_answer", "difficulty")
+        "question", "ansewera", "answerb", "answerc", "answerd", "correct_answer", "difficulty")
     tree_questions.column("#0", width=0, stretch=NO)
     tree_questions.column("question", width=120, minwidth=25)
     tree_questions.column("ansewera", width=120, minwidth=25)
@@ -77,15 +79,15 @@ def questions():
     e_correct_answer = Entry(root)
     e_difficulty = Entry(root)
 
-    e_question.grid(row=1, column=1, columnspan=2, pady=4)
-    e_answer_a.grid(row=2, column=1, columnspan=2, pady=4)
-    e_answer_b.grid(row=3, column=1, columnspan=2, pady=4)
-    e_answer_c.grid(row=4, column=1, columnspan=2, pady=4)
-    e_answer_d.grid(row=5, column=1, columnspan=2, pady=4)
-    e_correct_answer.grid(row=6, column=1, columnspan=2, pady=4)
-    e_difficulty.grid(row=7, column=1, columnspan=2, pady=4)
+    e_question.grid(row=1, column=1, columnspan=6, pady=4, sticky=W+E)
+    e_answer_a.grid(row=2, column=1, columnspan=6, pady=4, sticky=W+E)
+    e_answer_b.grid(row=3, column=1, columnspan=6, pady=4, sticky=W+E)
+    e_answer_c.grid(row=4, column=1, columnspan=6, pady=4, sticky=W+E)
+    e_answer_d.grid(row=5, column=1, columnspan=6, pady=4, sticky=W+E)
+    e_correct_answer.grid(row=6, column=1, columnspan=6, pady=4, sticky=W+E)
+    e_difficulty.grid(row=7, column=1, columnspan=6, pady=4, sticky=W+E)
 
-    def test_if_question_exist(my_question, my_question_exception):
+    def test_if_question_exist(my_question):
         conn = sqlite3.connect('millionerdb.db')
         c = conn.cursor()
         c.execute("SELECT * FROM questions_table")
@@ -98,6 +100,7 @@ def questions():
         conn.commit()
         conn.close()
         return False
+
     def clear_entries():
         e_question.delete(0, END)
         e_answer_a.delete(0, END)
@@ -107,17 +110,15 @@ def questions():
         e_correct_answer.delete(0, END)
         e_difficulty.delete(0, END)
 
-    def clear_tree(line):
-        if line == "ALL":
-            for record in tree_questions.get_children():
-                tree_questions.delete(record)
-        else:
-            selections = tree_questions.selection()
-            for record in selections:
-                tree_questions.delete(record)
+    def clear():
+        for record in tree_questions.get_children():
+            tree_questions.delete(record)
+        clear_entries()
+        question_tree_refresh()
+
 
     def add():
-        if not(test_if_question_exist(str(e_question.get()),"asdf")):
+        if not (test_if_question_exist(str(e_question.get()))):
             conn = sqlite3.connect('millionerdb.db')
             c = conn.cursor()
             c.execute("INSERT INTO questions_table VALUES (?,?,?,?,?,?,?)",
@@ -125,33 +126,28 @@ def questions():
                        e_correct_answer.get(), e_difficulty.get()))
             conn.commit()
             conn.close()
-            clear_entries()
-            clear_tree("ALL")
-            question_tree_refresh()
         else:
             messagebox.showerror("Error", "Η ερώτηση υπάρχει ήδη!!")
+        clear()
 
     def save():
-        global my_selection_question
-        if not(test_if_question_exist(str(e_question.get()), str(my_selection_question))):
+        if test_if_question_exist(str(e_question.get())):
             conn = sqlite3.connect('millionerdb.db')
             c = conn.cursor()
-            c.execute("UPDATE questions_table SET question='" + e_question.get()  + "' , answera='" + e_answer_a.get()  +
-                      "', answerb='" + e_answer_b.get()  + "', answerc='" + e_answer_c.get()  + "', answerd='" + e_answer_d.get()  +
-                      "', correct_answer='" + e_correct_answer.get()  + "', difficulty='" + e_difficulty.get()  +
+            c.execute("UPDATE questions_table SET question='" + e_question.get() + "' , answera='" + e_answer_a.get() +
+                      "', answerb='" + e_answer_b.get() + "', answerc='" + e_answer_c.get() + "', answerd='" + e_answer_d.get() +
+                      "', correct_answer='" + e_correct_answer.get() + "', difficulty='" + e_difficulty.get() +
                       "' WHERE question='" + my_selection_question + "'")
             conn.commit()
             conn.close()
-            clear_entries()
-            clear_tree("ALL")
-            question_tree_refresh()
         else:
-            messagebox.showerror("Error", "Η ερώτηση υπάρχει ήδη!!")
+            add()
+        clear()
 
     def select_record(event):
         global my_selection_question
         my_selection = tree_questions.focus()
-        selected_values = tree_questions.item(my_selection,"values")
+        selected_values = tree_questions.item(my_selection, "values")
         my_selection_question = selected_values[0]
         clear_entries()
         e_question.insert(0, selected_values[0])
@@ -162,33 +158,46 @@ def questions():
         e_correct_answer.insert(0, selected_values[5])
         e_difficulty.insert(0, selected_values[6])
 
+    def delete(line):
+        conn = sqlite3.connect('millionerdb.db')
+        c = conn.cursor()
+        if line != "ALL":
+            my_selection = tree_questions.focus()
+            selected_values = tree_questions.item(my_selection, "values")
+            for record in selected_values:
+                c.execute("DELETE FROM questions_table WHERE question='" + record + "'")
+        else:
+            c.execute("DELETE FROM questions_table")
+        conn.commit()
+        conn.close()
+        clear()
 
+    def reset():
+        # Γεμίζει τη λίστα με προσωρινές ερωτήσεις
+        conn = sqlite3.connect('millionerdb.db')
+        c = conn.cursor()
+        difficulties = ["easy", "medium", "hard"]
+        for difficulty in difficulties:
+            for j in range(10):
+                c.execute("INSERT INTO questions_table VALUES (?,?,?,?,?,?,?)",
+                          ("Ερώτηση δυσκολίας: " + str(difficulty) + " σειρά: " + str(j), "Α", "Β", "Γ", "Δ",
+                           random.choice(["Α", "Β", "Γ", "Δ"]), difficulty))
+        conn.commit()
+        conn.close()
+        clear()
 
     btn_add = Button(root, text="Add", command=add, width=15)
     btn_save = Button(root, text="Save", command=save, width=15)
-    btn_delete_one = Button(root, text="Delete", command=lambda: clear_tree("SELECTED"), width=15)
-    btn_delete_all = Button(root, text="Delete all", command=lambda: clear_tree("ALL"), width=15)
+    btn_delete_one = Button(root, text="Delete", command=lambda: delete("SELECTED"), width=15)
+    btn_delete_all = Button(root, text="Delete all", command=lambda: delete("ALL"), width=15)
+    btn_reset = Button(root, text="Reset", command=reset, width=15)
 
-    btn_add.grid(row=1, column=3)
-    btn_save.grid(row=2, column=3)
-    btn_delete_one.grid(row=3, column=3)
-    btn_delete_all.grid(row=4, column=3)
+    btn_add.grid(row=1, column=8)
+    btn_save.grid(row=2, column=8)
+    btn_delete_one.grid(row=3, column=8)
+    btn_delete_all.grid(row=4, column=8)
+    btn_reset.grid(row=5, column=8)
 
     tree_questions.bind("<Double-1>", select_record)
-
-
-
-
-    # def reset():
-    #     # Γεμίζει τη λίστα με προσωρινές ερωτήσεις
-    #     conn = sqlite3.connect('millionerdb.db')
-    #     c = conn.cursor()
-    #     difficulties=["easy","medium","hard"]
-    #     for difficulty in difficulties:
-    #         for j in range(10):
-    #             c.execute("INSERT INTO questions_table VALUES (?,?,?,?,?,?,?)",
-    #                       ("Ερώτηση δυσκολίας: " + str(difficulty) + " σειρά: " + str(j), "Α", "Β", "Γ", "Δ", random.choice(["Α", "Β", "Γ", "Δ"]), difficulty))
-    #     conn.commit()
-    #     conn.close()
 
     mainloop()
