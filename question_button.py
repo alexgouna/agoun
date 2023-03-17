@@ -183,6 +183,7 @@ def questions():
 
     def reset():
         # Γεμίζει τη λίστα με προσωρινές ερωτήσεις
+        delete("ALL")
         conn = sqlite3.connect('millionerdb.db')
         c = conn.cursor()
         difficulties = ["easy", "medium", "hard"]
