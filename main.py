@@ -3,7 +3,7 @@ import random
 import time
 import sqlite3
 from PIL import ImageTk, Image
-from question_button import questions
+from question_button import questions as question_button_questions
 import settings
 from tkinter import messagebox
 
@@ -100,13 +100,13 @@ def rank():
     # έως τώρα.
     pass
 
-def questions2():
+def questions():
     settings.counter_question += 1
     # Θα βρούμε μια λίστα με όλες τις ερωτήσεις και απαντήσεις όπου θα μπορούμε να την επεξεργαστούμε
     if settings.counter_question > 1:
         messagebox.showinfo("Προσοχή!!", "Είναι ήδη ανοιχτό!!!")
     else:
-        questions()
+        question_button_questions()
 
 # αρχική κεντρική οθόνη
 root = Tk()
@@ -121,7 +121,7 @@ btn_new_game = Button(root, text="New Game", command=millioner)
 # Κουμπί για εμφάνιση του πίνακα κατάταξης
 btn_rank = Button(root, text="Rank", command=rank)
 # Κουμπί για επεξεργασία ερωτήσεων
-btn_questions = Button(root, text="Game questions", command=questions2)
+btn_questions = Button(root, text="Game questions", command=questions)
 
 btn_new_game.grid(row=0, column=0)
 btn_rank.grid(row=1, column=0)
