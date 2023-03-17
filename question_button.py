@@ -6,7 +6,6 @@ from tkinter import ttk
 from tkinter import messagebox
 from PIL import ImageTk, Image
 import settings
-
 global my_selection_question
 
 
