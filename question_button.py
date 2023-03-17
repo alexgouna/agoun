@@ -5,28 +5,39 @@ import sqlite3
 from tkinter import ttk
 from tkinter import messagebox
 from PIL import ImageTk, Image
+import settings
 
 global my_selection_question
 
 
 def questions():
+    print("main.counter")
     # Θα βρούμε μια λίστα με όλες τις ερωτήσεις και απαντήσεις όπου θα μπορούμε να την επεξεργαστούμε
-    root = Tk()
-    root.geometry("1200x800")
-    root.title("Ερωτήσεις παιχνιδιού")
-    # root.resizable(False, False)
+    root_questions = Toplevel()
+    root_questions.geometry("1200x800")
+    root_questions.title("Ερωτήσεις παιχνιδιού")
+    # root_questions.resizable(False, False)
 
-    tree_questions = ttk.Treeview(root)
+    def close():
+        settings.counter_question = 0
+        root_questions.destroy()
+    root_questions.protocol("WM_DELETE_WINDOW", close)
+
+    tree_scrollbar = Scrollbar(root_questions)
+    tree_scrollbar.grid(row=0, column=11,sticky=N+S)
+
+    tree_questions = ttk.Treeview(root_questions, yscrollcommand=tree_scrollbar.set, height=25)
+    tree_scrollbar.config(command=tree_questions.yview)
     tree_questions['columns'] = (
-        "question", "ansewera", "answerb", "answerc", "answerd", "correct_answer", "difficulty")
+                "question", "ansewera", "answerb", "answerc", "answerd", "correct_answer", "difficulty")
     tree_questions.column("#0", width=0, stretch=NO)
-    tree_questions.column("question", width=120, minwidth=25)
-    tree_questions.column("ansewera", width=120, minwidth=25)
-    tree_questions.column("answerb", width=120, minwidth=25)
-    tree_questions.column("answerc", width=120, minwidth=25)
-    tree_questions.column("answerd", width=120, minwidth=25)
-    tree_questions.column("correct_answer", width=120, minwidth=25)
-    tree_questions.column("difficulty", width=120, minwidth=25)
+    tree_questions.column("question", width=236)
+    tree_questions.column("ansewera", width=175)
+    tree_questions.column("answerb", width=175)
+    tree_questions.column("answerc", width=175)
+    tree_questions.column("answerd", width=175)
+    tree_questions.column("correct_answer", width=175)
+    tree_questions.column("difficulty", width=70)
 
     tree_questions.heading("#0", text="")
     tree_questions.heading("question", text="Ερώτηση")
@@ -55,13 +66,13 @@ def questions():
 
     question_tree_refresh()
 
-    lbl_question = Label(root, text="Ερώτηση:")
-    lbl_answer_a = Label(root, text="Απάντηση Α:")
-    lbl_answer_b = Label(root, text="Απάντηση Β:")
-    lbl_answer_c = Label(root, text="Απάντηση Γ:")
-    lbl_answer_d = Label(root, text="Απάντηση Δ:")
-    lbl_correct_answer = Label(root, text="Σωστή απάντηση:")
-    lbl_difficulty = Label(root, text="Δυσκολία:")
+    lbl_question = Label(root_questions, text="   Ερώτηση:")
+    lbl_answer_a = Label(root_questions, text="   Απάντηση Α:")
+    lbl_answer_b = Label(root_questions, text="   Απάντηση Β:")
+    lbl_answer_c = Label(root_questions, text="   Απάντηση Γ:")
+    lbl_answer_d = Label(root_questions, text="   Απάντηση Δ:")
+    lbl_correct_answer = Label(root_questions, text="   Σωστή απάντηση:")
+    lbl_difficulty = Label(root_questions, text="   Δυσκολία:")
 
     lbl_question.grid(row=1, column=0, sticky=W)
     lbl_answer_a.grid(row=2, column=0, sticky=W)
@@ -71,13 +82,13 @@ def questions():
     lbl_correct_answer.grid(row=6, column=0, sticky=W)
     lbl_difficulty.grid(row=7, column=0, sticky=W)
 
-    e_question = Entry(root)
-    e_answer_a = Entry(root)
-    e_answer_b = Entry(root)
-    e_answer_c = Entry(root)
-    e_answer_d = Entry(root)
-    e_correct_answer = Entry(root)
-    e_difficulty = Entry(root)
+    e_question = Entry(root_questions)
+    e_answer_a = Entry(root_questions)
+    e_answer_b = Entry(root_questions)
+    e_answer_c = Entry(root_questions)
+    e_answer_d = Entry(root_questions)
+    e_correct_answer = Entry(root_questions)
+    e_difficulty = Entry(root_questions)
 
     e_question.grid(row=1, column=1, columnspan=6, pady=4, sticky=W+E)
     e_answer_a.grid(row=2, column=1, columnspan=6, pady=4, sticky=W+E)
@@ -116,7 +127,6 @@ def questions():
         clear_entries()
         question_tree_refresh()
 
-
     def add():
         if not (test_if_question_exist(str(e_question.get()))):
             conn = sqlite3.connect('millionerdb.db')
@@ -132,14 +142,15 @@ def questions():
 
     def save():
         if test_if_question_exist(str(e_question.get())):
-            conn = sqlite3.connect('millionerdb.db')
-            c = conn.cursor()
-            c.execute("UPDATE questions_table SET question='" + e_question.get() + "' , answera='" + e_answer_a.get() +
-                      "', answerb='" + e_answer_b.get() + "', answerc='" + e_answer_c.get() + "', answerd='" + e_answer_d.get() +
-                      "', correct_answer='" + e_correct_answer.get() + "', difficulty='" + e_difficulty.get() +
-                      "' WHERE question='" + my_selection_question + "'")
-            conn.commit()
-            conn.close()
+            if messagebox.askyesno("Προσοχή!!", "Η ερώτηση υπάρχει ήδη!!\n Να αντικατασταθεί;"):
+                conn = sqlite3.connect('millionerdb.db')
+                c = conn.cursor()
+                c.execute("UPDATE questions_table SET question='" + e_question.get() + "' , answera='" + e_answer_a.get() +
+                          "', answerb='" + e_answer_b.get() + "', answerc='" + e_answer_c.get() + "', answerd='" + e_answer_d.get() +
+                          "', correct_answer='" + e_correct_answer.get() + "', difficulty='" + e_difficulty.get() +
+                          "' WHERE question='" + str(e_question.get()) + "'")
+                conn.commit()
+                conn.close()
         else:
             add()
         clear()
@@ -161,13 +172,12 @@ def questions():
     def delete(line):
         conn = sqlite3.connect('millionerdb.db')
         c = conn.cursor()
-        if line != "ALL":
-            my_selection = tree_questions.focus()
-            selected_values = tree_questions.item(my_selection, "values")
-            for record in selected_values:
-                c.execute("DELETE FROM questions_table WHERE question='" + record + "'")
-        else:
+        if line == "ALL":
             c.execute("DELETE FROM questions_table")
+        else:
+            my_selection = tree_questions.selection()
+            for item in my_selection:
+                c.execute("DELETE FROM questions_table WHERE question='" + tree_questions.item(item, "values")[0] + "'")
         conn.commit()
         conn.close()
         clear()
@@ -186,13 +196,11 @@ def questions():
         conn.close()
         clear()
 
-    btn_add = Button(root, text="Add", command=add, width=15)
-    btn_save = Button(root, text="Save", command=save, width=15)
-    btn_delete_one = Button(root, text="Delete", command=lambda: delete("SELECTED"), width=15)
-    btn_delete_all = Button(root, text="Delete all", command=lambda: delete("ALL"), width=15)
-    btn_reset = Button(root, text="Reset", command=reset, width=15)
+    btn_save = Button(root_questions, text="Save", command=save, width=15)
+    btn_delete_one = Button(root_questions, text="Delete", command=lambda: delete("SELECTED"), width=15)
+    btn_delete_all = Button(root_questions, text="Delete all", command=lambda: delete("ALL"), width=15)
+    btn_reset = Button(root_questions, text="Reset", command=reset, width=15)
 
-    btn_add.grid(row=1, column=8)
     btn_save.grid(row=2, column=8)
     btn_delete_one.grid(row=3, column=8)
     btn_delete_all.grid(row=4, column=8)
