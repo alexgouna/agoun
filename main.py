@@ -5,6 +5,7 @@ import sqlite3
 from PIL import ImageTk, Image
 from question_button import questions as question_button_questions
 from millioner_button import millioner as millioner_button
+import test
 import settings
 from tkinter import messagebox
 
@@ -15,6 +16,7 @@ def millioner():
     if settings.counter_game > 1:
         messagebox.showinfo("Προσοχή!!", "Είναι ήδη ανοιχτό!!! millioner")
     else:
+        test.start_game()
         millioner_button()
 
 

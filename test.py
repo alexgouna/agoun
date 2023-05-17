@@ -2,6 +2,8 @@ import tkinter as tk
 from PIL import Image, ImageTk
 
 
+#fix  image errors
+
 class MillionaireGame(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -25,8 +27,7 @@ class MillionaireGame(tk.Tk):
         img = Image.open('assets/center.png')
         img = img.resize((50, 50))
         self.logo_image = ImageTk.PhotoImage(img)
-        self.logo_button = tk.Button(
-            self.main_logo_frame, image=self.logo_image, bg="black", bd=0)
+        self.logo_button = tk.Button(self.main_logo_frame, bg="black", bd=0)
         self.logo_button.pack(fill="both", expand=True)
 
     def setup_main_questions(self):
@@ -54,8 +55,7 @@ class MillionaireGame(tk.Tk):
         img = Image.open('assets/Classic5050.png')
         img = img.resize((62, 48))
         self.button_5050_image = ImageTk.PhotoImage(img)
-        self.button_5050 = tk.Button(
-            self.button_5050_frame, bg="red", image=self.button_5050_image, bd=0)
+        self.button_5050 = tk.Button(self.button_5050_frame, bg="red", bd=0)
         self.button_5050.pack(fill="both", expand=True)
 
     def setup_ata_button(self):
@@ -64,8 +64,7 @@ class MillionaireGame(tk.Tk):
         img = Image.open('assets/ClassicATA.png')
         img = img.resize((62, 48))
         self.button_ata_image = ImageTk.PhotoImage(img)
-        self.button_ata = tk.Button(self.button_ata_frame, bg="yellow",
-                                    image=self.button_ata_image, bd=0)
+        self.button_ata = tk.Button(self.button_ata_frame, bg="yellow", bd=0)
         self.button_ata.pack(fill="both", expand=True)
 
     def setup_paf_button(self):
@@ -74,8 +73,7 @@ class MillionaireGame(tk.Tk):
         img = Image.open('assets/ClassicPAF.png')
         img = img.resize((62, 48))
         self.button_paf_image = ImageTk.PhotoImage(img)
-        self.button_paf = tk.Button(self.button_paf_frame, bg="purple",
-                                    image=self.button_paf_image, bd=0)
+        self.button_paf = tk.Button(self.button_paf_frame, bg="purple", bd=0)
         self.button_paf.pack(fill="both", expand=True)
 
     def setup_sidebar_prizes(self):
@@ -92,11 +90,13 @@ class MillionaireGame(tk.Tk):
             label.pack(fill="both", expand=True)
             self.prize_labels.append(label)
 
+    def start(self):
+        """
+        Start the game.
+        """
+        self.mainloop()
 
-    self.mainloop()
 
-
-if __name__ == '__main__':
+def start_game():
     app = MillionaireGame()
-    print("adf")
     app.start()
