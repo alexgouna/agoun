@@ -4,7 +4,6 @@ import time
 import sqlite3
 from PIL import ImageTk, Image
 from question_button import questions as question_button_questions
-from millioner_button import millioner as millioner_button
 from game import start_game
 import settings
 from tkinter import messagebox

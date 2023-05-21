@@ -4,12 +4,14 @@ from PIL import Image, ImageTk
 import millioner_button
 import settings
 
+# "question" is a list with the attributes of the current question
+question =[]
 
 class MillionaireGame(tk.Toplevel):
     def __init__(self, master):
         # super().__init__()
         # set 5 random question from DB for each lvl
-        millioner_button.my_questions()
+        question = millioner_button.my_questions()
         tk.Toplevel.__init__(self, master)
         self.title("Who Wants to Be a Millionaire")
         self.geometry('1280x720')
