@@ -5,9 +5,6 @@ import millioner_button
 import settings
 
 
-def cmd_test():
-    print(settings.questions_easy)
-
 class MillionaireGame(tk.Toplevel):
     def __init__(self, master):
         # super().__init__()
@@ -85,7 +82,7 @@ class MillionaireGame(tk.Toplevel):
         img = img.resize((62, 48))
         self.button_5050_image = ImageTk.PhotoImage(img)
         self.button_5050 = tk.Button(
-            self.button_5050_frame, bg="red", image=self.button_5050_image, bd=0, command = cmd_test)
+            self.button_5050_frame, bg="red", image=self.button_5050_image, bd=0)
         self.button_5050.pack(fill="both", expand=True)
 
     def setup_ata_button(self):
