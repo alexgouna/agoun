@@ -1,16 +1,23 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+
+import millioner_button
 import settings
 
+
+def cmd_test():
+    print(settings.questions_easy)
 
 class MillionaireGame(tk.Toplevel):
     def __init__(self, master):
         # super().__init__()
+        # set 5 random question from DB for each lvl
+        millioner_button.my_questions()
         tk.Toplevel.__init__(self, master)
         self.title("Who Wants to Be a Millionaire")
         self.geometry('1280x720')
         self.configure(background='black')
-        # this doesnt update sidebar width for now
+        # this doesn't update sidebar width for now
         self.main_width = 900
         self.sidebar_width = 1280 - self.main_width
         self.setup_main_screen()
@@ -24,14 +31,14 @@ class MillionaireGame(tk.Toplevel):
         self.setup_main_screen_with_prompt()
         self.setup_answers()
 
+
     def setup_main_screen_with_prompt(self):
         self.main_logo_frame = tk.Frame(self.main_frame, bg="purple")
         self.main_logo_frame.pack(fill="both", expand=True)
         img = Image.open('assets/center.png')
         img = img.resize((250, 250))
         self.logo_image = ImageTk.PhotoImage(img)
-        self.logo_button = tk.Button(
-            self.main_logo_frame, image=self.logo_image, bg="black", bd=0)
+        self.logo_button = tk.Button(self.main_logo_frame, image=self.logo_image, bg="black", bd=0)
         self.logo_button.pack(fill="both", expand=True)
         self.setup_question_prompt("question")
 
@@ -70,6 +77,7 @@ class MillionaireGame(tk.Toplevel):
         self.setup_ata_button()
         self.setup_paf_button()
 
+
     def setup_5050_button(self):
         self.button_5050_frame = tk.Frame(self.options_frame, bg="green")
         self.button_5050_frame.pack(side="left", fill="both", expand=True)
@@ -77,7 +85,7 @@ class MillionaireGame(tk.Toplevel):
         img = img.resize((62, 48))
         self.button_5050_image = ImageTk.PhotoImage(img)
         self.button_5050 = tk.Button(
-            self.button_5050_frame, bg="red", image=self.button_5050_image, bd=0)
+            self.button_5050_frame, bg="red", image=self.button_5050_image, bd=0, command = cmd_test)
         self.button_5050.pack(fill="both", expand=True)
 
     def setup_ata_button(self):

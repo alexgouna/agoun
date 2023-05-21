@@ -42,28 +42,32 @@ def millioner():
 
 
     # help 50/50
-    def help1():
-        # Απενεργοποίησε δύο κουμπιά με λανθασμένη απάντηση
-        # Άλλαξε την εικόνα με την αντίστοιχη με Χ
+    def help5050(question):
+        # Παίρνεις μία λίστα question.
+        # Επιλέγεις δύο τυχαίες από τις λάθος απαντήσεις και επιστρέφεις την ίδια λίστα με 0 στην θέση αυτών των απαντήσεων
+        # ΠΧ. από ('Ερώτηση δυσκολίας: easy σειρά: 5', 'Α', 'Β', 'Γ', 'Δ', 'Β', 'easy')
+        # επιστρέφεις ('Ερώτηση δυσκολίας: easy σειρά: 5', 'Α', 'Β', 0, 0, 'Β', 'easy')
         pass
 
 
     # help2 PC propose an answer
-    def help2():
+    def helppc(question):
         # Δώσε μία πιθανή απάντηση με ποσοστό επιτυχίας.
         # Δεν είναι υποχρεωτικό να επιστρέψει τη σωστή απάντηση
+        # Αν είναι εύκολη δώσε ένα πλεονέκτημα στη σωστή απάντηση 35%
+        # Αν είναι μεσαία δώσε ένα πλεονέκτημα στη σωστή απάντηση 25%
+        # Αν είναι δύσκολη δώσε ένα πλεονέκτημα στη σωστή απάντηση 15%
+        # Πχ με σωστή τη Β θα έχουμε:
+        # Α = 21%
+        # Β = 18% + 35%(πλεονέκτημα) = 53%
+        # Γ = 12%
+        # Δ = 14%
         pass
 
-    def help3():
-        # Αλλάζει την ερώτηση με μία νέα
+    def helpchange(question):
+        # Αλλάζει την ερώτηση με μία νέα του ίδιου επιπέδου
         pass
 
-
-    def start_game_gui():
-        # Ξεκινάει το παιχνίδι και φτιάχνει το GUI. Περιέχεται ένα κουμπί για κάθε βοήθεια Περιέχονται 4 κουμπιά ένα
-        # για κάθε απάντηση. Με εντολή give_answer(answer) όπου answer είναι η απάντηση του κουμπιού Προσοχή! Θέλουμε
-        # και ένα χρονόμετρο 60sec που θα χάνει ο παίχτης αν δεν απαντήσει εγκαίρως
-        pass
 
 
     # Συνολικός χρόνος παιχνιδιού
@@ -77,6 +81,8 @@ def millioner():
     # Πίνακας questions_table (question, ansewera, answerb, answerc, answerd, correct_answer, difficulty)
     # Πίνακας rank_table (name, score)
 
+
+def my_questions():
     # Από τη βάση δεδομένων φτιάχνω τρεις λίστες ανάλογα τη δυσκολία των ερωτήσεων
     conn = sqlite3.connect('millionerdb.db')
     c = conn.cursor()
@@ -89,10 +95,23 @@ def millioner():
     conn.commit()
     conn.close()
 
-    # Στη λίστα question βάζω μία τυχαία ερώτηση από τις εύκολες ερωτήσεις
-    random_num = random.randrange(0, len(questions_easy) - 1)
-    question = questions_easy[random_num]
-    questions_easy.pop(random_num)
+    questions_temp1 = []
+    questions_temp2 = []
+    questions_temp3 = []
+    # 5 τυχαίες ερωτήσεις από τη βάση δεδομένων + 1 επιπλέον για περίπτωση βοήθειας αλλαγής ερώτησης
+    for i in range(6):
+        random_num1 = random.randrange(0, len(questions_easy) - 1)
+        random_num2 = random.randrange(0, len(questions_easy) - 1)
+        random_num3 = random.randrange(0, len(questions_easy) - 1)
+        questions_temp1.append(questions_easy[random_num1])
+        questions_temp2.append(questions_medium[random_num2])
+        questions_temp3.append(questions_hard[random_num3])
+        questions_easy.pop(random_num1)
+        questions_medium.pop(random_num2)
+        questions_hard.pop(random_num3)
 
-    print("asdfasf")
-    start_game_gui()
+    settings.questions_easy = questions_temp1
+    settings.questions_medium = questions_temp2
+    settings.questions_hard = questions_temp3
+
+
