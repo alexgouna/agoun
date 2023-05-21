@@ -1,44 +1,65 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+import settings
 
 
-#fix  image errors
-
-class MillionaireGame(tk.Tk):
-    def __init__(self):
-        super().__init__()
+class MillionaireGame(tk.Toplevel):
+    def __init__(self, master):
+        # super().__init__()
+        tk.Toplevel.__init__(self, master)
         self.title("Who Wants to Be a Millionaire")
         self.geometry('1280x720')
         self.configure(background='black')
+        # this doesnt update sidebar width for now
         self.main_width = 900
-        self.sidebar_width = self.winfo_width() - self.main_width
+        self.sidebar_width = 1280 - self.main_width
         self.setup_main_screen()
         self.setup_sidebar_screen()
+        # bind close
+        self.protocol("WM_DELETE_WINDOW", self.close)
 
     def setup_main_screen(self):
         self.main_frame = tk.Frame(self, bg="gray")
         self.main_frame.pack(side="left", fill="both", expand=True)
-        self.setup_main_logo()
-        self.setup_main_questions()
+        self.setup_main_screen_with_prompt()
+        self.setup_answers()
 
-    def setup_main_logo(self):
+    def setup_main_screen_with_prompt(self):
         self.main_logo_frame = tk.Frame(self.main_frame, bg="purple")
         self.main_logo_frame.pack(fill="both", expand=True)
         img = Image.open('assets/center.png')
-        img = img.resize((50, 50))
+        img = img.resize((250, 250))
         self.logo_image = ImageTk.PhotoImage(img)
-        self.logo_button = tk.Button(self.main_logo_frame, bg="black", bd=0)
+        self.logo_button = tk.Button(
+            self.main_logo_frame, image=self.logo_image, bg="black", bd=0)
         self.logo_button.pack(fill="both", expand=True)
+        self.setup_question_prompt("question")
 
-    def setup_main_questions(self):
+    def setup_answers(self):
         self.main_questions_frame = tk.Frame(self.main_frame, bg="yellow")
         self.main_questions_frame.pack(fill="both", expand=True)
+        # TODO: Add questions widget
+        self.setup_answer(1, "answer 1")
+        self.setup_answer(2, "answer 2")
+        self.setup_answer(3, "answer 3")
+        self.setup_answer(4, "answer 4")
 
-        # TODO: Add questions widgets
+    def setup_answer(self, index, answer_label):
+        self.dada = tk.Frame(self.main_questions_frame, bg="green")
+        # TODO determine side
+        label = tk.Label(self.main_questions_frame, text=answer_label, bg="blue",
+                         fg="white", font=("Helvetica", 14))
+        label.pack(fill="both", expand=True)
+
+    def setup_question_prompt(self, question):
+        label = tk.Label(self.main_frame, text=question, bg="red",
+                         fg="white", font=("Helvetica", 14))
+        label.pack(fill="both", expand=True)
 
     def setup_sidebar_screen(self):
-        self.sidebar_frame = tk.Frame(self, bg="red")
-        self.sidebar_frame.pack(side="right", fill="both", expand=True)
+        self.sidebar_frame = tk.Frame(self, bg="red", width=self.sidebar_width)
+        self.sidebar_frame.pack(side="right", fill="both")
+        self.sidebar_frame.pack_propagate(0)
         self.setup_sidebar_options()
         self.setup_sidebar_prizes()
 
@@ -55,7 +76,8 @@ class MillionaireGame(tk.Tk):
         img = Image.open('assets/Classic5050.png')
         img = img.resize((62, 48))
         self.button_5050_image = ImageTk.PhotoImage(img)
-        self.button_5050 = tk.Button(self.button_5050_frame, bg="red", bd=0)
+        self.button_5050 = tk.Button(
+            self.button_5050_frame, bg="red", image=self.button_5050_image, bd=0)
         self.button_5050.pack(fill="both", expand=True)
 
     def setup_ata_button(self):
@@ -64,7 +86,8 @@ class MillionaireGame(tk.Tk):
         img = Image.open('assets/ClassicATA.png')
         img = img.resize((62, 48))
         self.button_ata_image = ImageTk.PhotoImage(img)
-        self.button_ata = tk.Button(self.button_ata_frame, bg="yellow", bd=0)
+        self.button_ata = tk.Button(self.button_ata_frame, bg="yellow",
+                                    image=self.button_ata_image, bd=0)
         self.button_ata.pack(fill="both", expand=True)
 
     def setup_paf_button(self):
@@ -73,7 +96,8 @@ class MillionaireGame(tk.Tk):
         img = Image.open('assets/ClassicPAF.png')
         img = img.resize((62, 48))
         self.button_paf_image = ImageTk.PhotoImage(img)
-        self.button_paf = tk.Button(self.button_paf_frame, bg="purple", bd=0)
+        self.button_paf = tk.Button(self.button_paf_frame, bg="purple",
+                                    image=self.button_paf_image, bd=0)
         self.button_paf.pack(fill="both", expand=True)
 
     def setup_sidebar_prizes(self):
@@ -96,7 +120,12 @@ class MillionaireGame(tk.Tk):
         """
         self.mainloop()
 
+    def close(self):
+        print('close')
+        settings.counter_game = 0
+        self.destroy()
 
-def start_game():
-    app = MillionaireGame()
+
+def start_game(root):
+    app = MillionaireGame(root)
     app.start()
