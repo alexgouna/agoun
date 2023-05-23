@@ -10,12 +10,11 @@ global my_selection_question
 
 
 def questions():
-    print("main.counter")
     # Θα βρούμε μια λίστα με όλες τις ερωτήσεις και απαντήσεις όπου θα μπορούμε να την επεξεργαστούμε
     root_questions = Toplevel()
     root_questions.geometry("1200x800")
     root_questions.title("Ερωτήσεις παιχνιδιού")
-    # root_questions.resizable(False, False)
+    root_questions.resizable(False, False)
 
     def close():
         settings.counter_question = 0
