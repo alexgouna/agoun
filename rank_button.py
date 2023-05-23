@@ -37,8 +37,8 @@ def rank():
     tree_rank.heading("Player", text="Player")
     tree_rank.heading("Points", text="Points")
 
-    tree_rank.tag_configure('white',background="white")
-    tree_rank.tag_configure('light_blue', background="lightblue")
+    tree_rank.tag_configure('white',background="#cb71fb")
+    tree_rank.tag_configure('light_blue', background="#836eff")
     i = 0
     conn = sqlite3.connect('millionerdb.db')
     c = conn.cursor()
