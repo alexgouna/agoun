@@ -4,15 +4,16 @@ from PIL import Image, ImageTk
 import millioner_button
 import settings
 
+
 # "question" is a list with the attributes of the current question
-question =[]
+
 
 class MillionaireGame(tk.Toplevel):
     def __init__(self, master):
         # super().__init__()
-        # set 5 random question from DB for each lvl
-        question = millioner_button.my_questions()
         tk.Toplevel.__init__(self, master)
+        self.question = millioner_button.my_questions()
+        self.counter = 0
         self.title("Who Wants to Be a Millionaire")
         self.geometry('1280x720')
         self.configure(background='black')
@@ -30,7 +31,6 @@ class MillionaireGame(tk.Toplevel):
         self.setup_main_screen_with_prompt()
         self.setup_answers()
 
-
     def setup_main_screen_with_prompt(self):
         self.main_logo_frame = tk.Frame(self.main_frame, bg="purple")
         self.main_logo_frame.pack(fill="both", expand=True)
@@ -39,27 +39,43 @@ class MillionaireGame(tk.Toplevel):
         self.logo_image = ImageTk.PhotoImage(img)
         self.logo_button = tk.Button(self.main_logo_frame, image=self.logo_image, bg="black", bd=0)
         self.logo_button.pack(fill="both", expand=True)
-        self.setup_question_prompt("question")
+        self.setup_question_prompt(self.question[0])
 
     def setup_answers(self):
         self.main_questions_frame = tk.Frame(self.main_frame, bg="yellow")
         self.main_questions_frame.pack(fill="both", expand=True)
         # TODO: Add questions widget
-        self.setup_answer(1, "answer 1")
-        self.setup_answer(2, "answer 2")
-        self.setup_answer(3, "answer 3")
-        self.setup_answer(4, "answer 4")
+        self.setup_answer(1)
+        self.setup_answer(2)
+        self.setup_answer(3)
+        self.setup_answer(4)
 
-    def setup_answer(self, index, answer_label):
+    def correct_answer(self, ):
+        print(f"correct  {self.counter}")
+        if self.counter < 5:
+            self.question = settings.questions_easy[self.counter]
+        elif self.counter < 10:
+            self.question = settings.questions_medium[self.counter-5]
+        else:
+            self.question = settings.questions_hard[self.counter-10]
+        self.main_frame.destroy()
+        self.setup_main_screen()
+
+    def my_answer(self, answer):
+        if answer == self.question[5]:
+            self.counter = self.counter + 1
+            self.correct_answer()
+        print(self.question)
+
+    def setup_answer(self, index):
         self.dada = tk.Frame(self.main_questions_frame, bg="green")
         # TODO determine side
-        label = tk.Label(self.main_questions_frame, text=answer_label, bg="blue",
-                         fg="white", font=("Helvetica", 14))
-        label.pack(fill="both", expand=True)
+        self.button = tk.Button(self.main_questions_frame, text=self.question[index], bg="blue", fg="white",
+                                font=("Helvetica", 14), command=lambda: self.my_answer(self.question[index]))
+        self.button.pack(fill="both", expand=True)
 
     def setup_question_prompt(self, question):
-        label = tk.Label(self.main_frame, text=question, bg="red",
-                         fg="white", font=("Helvetica", 14))
+        label = tk.Label(self.main_frame, text=question, bg="red", fg="white", font=("Helvetica", 14))
         label.pack(fill="both", expand=True)
 
     def setup_sidebar_screen(self):
@@ -75,7 +91,6 @@ class MillionaireGame(tk.Toplevel):
         self.setup_5050_button()
         self.setup_ata_button()
         self.setup_paf_button()
-
 
     def setup_5050_button(self):
         self.button_5050_frame = tk.Frame(self.options_frame, bg="green")
@@ -128,7 +143,6 @@ class MillionaireGame(tk.Toplevel):
         self.mainloop()
 
     def close(self):
-        print('close')
         settings.counter_game = 0
         self.destroy()
 

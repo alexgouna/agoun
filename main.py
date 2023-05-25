@@ -11,8 +11,6 @@ import settings
 from tkinter import messagebox
 
 # Εδώ αρχίζει το παιχνίδι!!
-
-
 def millioner():
     settings.counter_game += 1
     # Θα βρούμε μια λίστα με όλες τις ερωτήσεις και απαντήσεις όπου θα μπορούμε να την επεξεργαστούμε
@@ -66,7 +64,5 @@ btn_questions = Button(root, text="Game questions", command=questions, height = 
 my_canvas.create_window(20,20,anchor="nw",window = btn_new_game)
 my_canvas.create_window(20,80,anchor="nw",window = btn_rank)
 my_canvas.create_window(20,140,anchor="nw",window = btn_questions)
-
-
 
 mainloop()
