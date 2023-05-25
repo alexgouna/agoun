@@ -1,6 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-
+import rank
 import millioner_button
 import settings
 
@@ -50,7 +50,7 @@ class MillionaireGame(tk.Toplevel):
         self.setup_answer(3)
         self.setup_answer(4)
 
-    def correct_answer(self, ):
+    def correct_answer(self):
         print(f"correct  {self.counter}")
         if self.counter < 5:
             self.question = settings.questions_easy[self.counter]
@@ -60,11 +60,17 @@ class MillionaireGame(tk.Toplevel):
             self.question = settings.questions_hard[self.counter-10]
         self.main_frame.destroy()
         self.setup_main_screen()
+        self.prizes_frame.destroy()
+        self.setup_sidebar_prizes()
+
 
     def my_answer(self, answer):
         if answer == self.question[5]:
             self.counter = self.counter + 1
             self.correct_answer()
+        else:
+            self.destroy()
+            rank.new_rank(self.counter)
         print(self.question)
 
     def setup_answer(self, index):
@@ -98,8 +104,7 @@ class MillionaireGame(tk.Toplevel):
         img = Image.open('assets/Classic5050.png')
         img = img.resize((62, 48))
         self.button_5050_image = ImageTk.PhotoImage(img)
-        self.button_5050 = tk.Button(
-            self.button_5050_frame, bg="red", image=self.button_5050_image, bd=0)
+        self.button_5050 = tk.Button(self.button_5050_frame, bg="red", image=self.button_5050_image, bd=0)
         self.button_5050.pack(fill="both", expand=True)
 
     def setup_ata_button(self):
@@ -118,23 +123,26 @@ class MillionaireGame(tk.Toplevel):
         img = Image.open('assets/ClassicPAF.png')
         img = img.resize((62, 48))
         self.button_paf_image = ImageTk.PhotoImage(img)
-        self.button_paf = tk.Button(self.button_paf_frame, bg="purple",
-                                    image=self.button_paf_image, bd=0)
+        self.button_paf = tk.Button(self.button_paf_frame, bg="purple", image=self.button_paf_image, bd=0)
         self.button_paf.pack(fill="both", expand=True)
 
     def setup_sidebar_prizes(self):
         self.prizes_frame = tk.Frame(self.sidebar_frame, bg="blue")
         self.prizes_frame.pack(side="bottom", fill="both", expand=True)
-
         self.prize_labels = []
-        prizes = ['$1,000,000', '$500,000', '$250,000', '$100,000', '$50,000',
-                  '$25,000', '$10,000', '$5,000', '$1,000', '$500', '$300',
-                  '$200', '$100', '$50', '$0']
+        prizes = ['$1,000,000', '$500,000', '$250,000', '$100,000',
+                  '$50,000', '$25,000', '$10,000', '$5,000', '$1,000',
+                  '$500', '$300', '$200', '$100', '$50', '$0']
+        counter = len(prizes) - 1
         for prize in prizes:
-            label = tk.Label(self.prizes_frame, text=prize, bg="blue",
-                             fg="white", font=("Helvetica", 14))
+            print(f" {counter}  ,  {self.counter}")
+            if counter == self.counter:
+                label = tk.Label(self.prizes_frame, text=prize, bg="green", fg="white", font=("Helvetica", 14))
+            else:
+                label = tk.Label(self.prizes_frame, text=prize, bg="blue", fg="white", font=("Helvetica", 14))
             label.pack(fill="both", expand=True)
             self.prize_labels.append(label)
+            counter = counter - 1
 
     def start(self):
         """
@@ -145,6 +153,7 @@ class MillionaireGame(tk.Toplevel):
     def close(self):
         settings.counter_game = 0
         self.destroy()
+
 
 
 def start_game(root):
