@@ -4,10 +4,6 @@ import rank
 import millioner_button
 import settings
 
-
-# "question" is a list with the attributes of the current question
-
-
 class MillionaireGame(tk.Toplevel):
     def __init__(self, master):
         # super().__init__()
@@ -152,7 +148,6 @@ class MillionaireGame(tk.Toplevel):
 
     def close(self):
         settings.open_window = 0
-        # settings.counter_game = 0
         self.destroy()
 
 

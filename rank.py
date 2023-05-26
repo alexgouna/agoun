@@ -11,14 +11,10 @@ global my_selection_question
 def new_rank(counter):
     toplevel_rank = Toplevel()
     toplevel_rank.geometry("400x400")
-    toplevel_rank.title("Main")
-
-    settings.counter_toplevel_rank = 1
-    settings.counter_game = 0
+    toplevel_rank.title("My rank")
 
     def close():
         settings.open_window = 0
-        # settings.counter_toplevel_rank = 0
         toplevel_rank.destroy()
     toplevel_rank.protocol("WM_DELETE_WINDOW", close)
 
@@ -43,6 +39,3 @@ def new_rank(counter):
     btn_submit.grid(row=2,column=0,columnspan=2)
 
     toplevel_rank.mainloop()
-
-    print("my rank is,,, ")
-
