@@ -1,6 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-import time
+
 import rank
 import millioner_button
 import settings
@@ -29,14 +29,14 @@ class MillionaireGame(tk.Toplevel):
         self.setup_answers()
 
     def setup_main_screen_with_prompt(self):
-        self.main_logo_frame = tk.Frame(self.main_frame, bg="purple")
+        self.main_logo_frame = tk.Frame(self.main_frame, bg="black")
         self.main_logo_frame.pack(fill="both", expand=True)
-        self.left_frame = tk.Frame(self.main_logo_frame, bg="green")
+        self.left_frame = tk.Frame(self.main_logo_frame, bg="black")
         self.right_frame = tk.Frame(self.main_logo_frame, bg="red")
         self.left_frame.pack(side="left", fill="both")
         self.right_frame.pack(side="right", fill="both")
         img = Image.open('assets/center.png')
-        img = img.resize((400, 300))
+        img = img.resize((532, 399))
         self.logo_image = ImageTk.PhotoImage(img)
         self.logo_button = tk.Button(self.right_frame, image=self.logo_image, bg="black", bd=0)
         self.logo_button.pack(fill="both", expand=True)
@@ -45,19 +45,23 @@ class MillionaireGame(tk.Toplevel):
 
     def set_timer(self):
         global my_timer
-        my_timer = 6000
+        my_timer = 600
         def update():
             global my_timer
             my_timer = my_timer - 1
             self.my_timer_lbl.configure(text=round(my_timer/100))
-            if my_timer < 6000:
-                # schedule next update 1 second later
+            if my_timer >0:
                 self.my_timer_lbl.after(10, update)
+            else:
+                print("end timer")
+                self.game_over()
 
-        self.my_timer_lbl = tk.Label(self.left_frame, text=round(my_timer/100))
-        self.my_timer_lbl.pack()
+        self.my_text_lbl = tk.Label(self.left_frame, text="Timer",font=('Arial', 50), bg='black', fg='white')
+        self.my_timer_lbl = tk.Label(self.left_frame, text="60",font=('Arial', 80), bg='black', fg='white')
+        self.my_text_lbl.pack(padx=20, pady=20)
+        self.my_timer_lbl.pack(padx=20, pady=20)
 
-        self.after(1000, update)  # start the update 1 second later
+        self.after(1, update)
 
 
     def setup_answers(self):
@@ -82,14 +86,17 @@ class MillionaireGame(tk.Toplevel):
         self.prizes_frame.destroy()
         self.setup_sidebar_prizes()
 
+    def game_over(self):
+        settings.my_window = "βαθμολογίας"
+        self.destroy()
+        rank.new_rank(self.counter)
 
     def my_answer(self, answer):
         if answer == self.question[5]:
             self.counter = self.counter + 1
             self.correct_answer()
         else:
-            self.destroy()
-            rank.new_rank(self.counter)
+            self.game_over()
         print(self.question)
 
     def setup_answer(self, index):

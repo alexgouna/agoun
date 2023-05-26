@@ -11,33 +11,29 @@ import settings
 from tkinter import messagebox
 
 settings.open_window = 0
-global my_window
 
 # Εδώ αρχίζει το παιχνίδι!!
 def millioner():
-    global my_window
     if settings.open_window == 1:
-        messagebox.showinfo(f"Προσοχή!!", f"Έχεις ανοιχτό το παράθυρο {my_window}.. \nΚλείσε το παράθυρο για να ξεκινήσει το παιχνίδι!!")
+        messagebox.showinfo(f"Προσοχή!!", f"Έχεις ανοιχτό το παράθυρο {settings.my_window}.. \nΚλείσε το παράθυρο για να ξεκινήσει το παιχνίδι!!")
     else:
-        my_window = "Millioner"
+        settings.my_window = "Millioner"
         settings.open_window = 1
         start_game(root)
 
 def rank():
-    global my_window
     if settings.open_window == 1:
-        messagebox.showinfo(f"Προσοχή!!", f"Έχεις ανοιχτό το παράθυρο {my_window}.. \nΚλείσε το παράθυρο για να δεις τον πίνακα βαθμολογίας!!")
+        messagebox.showinfo(f"Προσοχή!!", f"Έχεις ανοιχτό το παράθυρο {settings.my_window}.. \nΚλείσε το παράθυρο για να δεις τον πίνακα βαθμολογίας!!")
     else:
-        my_window = "βαθμολογίας"
+        settings.my_window = "βαθμολογίας"
         settings.open_window = 1
         rank_button.rank()
 
 def questions():
-    global my_window
     if settings.open_window == 1:
-        messagebox.showinfo(f"Προσοχή!!", f"Έχεις ανοιχτό το παράθυρο {my_window}.. \nΚλείσε το παράθυρο για να επεξεργαστείς τις ερωτήσεις!!")
+        messagebox.showinfo(f"Προσοχή!!", f"Έχεις ανοιχτό το παράθυρο {settings.my_window}.. \nΚλείσε το παράθυρο για να επεξεργαστείς τις ερωτήσεις!!")
     else:
-        my_window = "ερωτήσεις"
+        settings.my_window = "ερωτήσεις"
         settings.open_window = 1
         question_button_questions()
 
