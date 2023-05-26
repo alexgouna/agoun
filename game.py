@@ -44,16 +44,15 @@ class MillionaireGame(tk.Toplevel):
         self.set_timer()
 
     def set_timer(self):
-        global my_timer
-        my_timer = 600
+        self.my_timer = 600
+        self.total_time = 0
         def update():
-            global my_timer
-            my_timer = my_timer - 1
-            self.my_timer_lbl.configure(text=round(my_timer/100))
-            if my_timer >0:
+            self.my_timer = self.my_timer - 1
+            self.total_time = self.total_time + 1
+            self.my_timer_lbl.configure(text=round(self.my_timer/100))
+            if self.my_timer >0:
                 self.my_timer_lbl.after(10, update)
             else:
-                print("end timer")
                 self.game_over()
 
         self.my_text_lbl = tk.Label(self.left_frame, text="Timer",font=('Arial', 50), bg='black', fg='white')
@@ -74,7 +73,6 @@ class MillionaireGame(tk.Toplevel):
         self.setup_answer(4)
 
     def correct_answer(self):
-        print(f"correct  {self.counter}")
         if self.counter < 5:
             self.question = settings.questions_easy[self.counter]
         elif self.counter < 10:
@@ -87,9 +85,11 @@ class MillionaireGame(tk.Toplevel):
         self.setup_sidebar_prizes()
 
     def game_over(self):
+        prizes = [0,50,100,200,300,500,1000,5000,10000,25000,50000,100000,250000,500000,1000000]
         settings.my_window = "βαθμολογίας"
         self.destroy()
-        rank.new_rank(self.counter)
+        my_score= round(prizes[self.counter]/(self.total_time/60))
+        rank.new_rank(my_score)
 
     def my_answer(self, answer):
         if answer == self.question[5]:
@@ -97,7 +97,6 @@ class MillionaireGame(tk.Toplevel):
             self.correct_answer()
         else:
             self.game_over()
-        print(self.question)
 
     def setup_answer(self, index):
         self.dada = tk.Frame(self.main_questions_frame, bg="green")
@@ -161,7 +160,6 @@ class MillionaireGame(tk.Toplevel):
                   '$500', '$300', '$200', '$100', '$50', '$0']
         counter = len(prizes) - 1
         for prize in prizes:
-            print(f" {counter}  ,  {self.counter}")
             if counter == self.counter:
                 label = tk.Label(self.prizes_frame, text=prize, bg="green", fg="white", font=("Helvetica", 14))
             else:
