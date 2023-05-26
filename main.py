@@ -10,43 +10,36 @@ from game import start_game
 import settings
 from tkinter import messagebox
 
-settings.counter_toplevel_rank = 0
+settings.open_window = 0
+global my_window
 
 # Εδώ αρχίζει το παιχνίδι!!
 def millioner():
-    if settings.counter_toplevel_rank == 1:
-        messagebox.showinfo("Προσοχή!!", "Δώσε το όνομά σου για να αποθηκευτεί η βαθμολογία σου!!!")
+    global my_window
+    if settings.open_window == 1:
+        messagebox.showinfo(f"Προσοχή!!", f"Έχεις ανοιχτό το παράθυρο {my_window}.. \nΚλείσε το παράθυρο για να ξεκινήσει το παιχνίδι!!")
     else:
-        settings.counter_game += 1
-        # Θα βρούμε μια λίστα με όλες τις ερωτήσεις και απαντήσεις όπου θα μπορούμε να την επεξεργαστούμε
-        if settings.counter_game > 1:
-            messagebox.showinfo("Προσοχή!!", "Το παιχνίδι είναι ήδη ανοιχτό!!!")
-        else:
-            start_game(root)
+        my_window = "Millioner"
+        settings.open_window = 1
+        start_game(root)
 
 def rank():
-    if settings.counter_toplevel_rank == 1:
-        messagebox.showinfo("Προσοχή!!", "Δώσε το όνομά σου για να αποθηκευτεί η βαθμολογία σου!!!")
+    global my_window
+    if settings.open_window == 1:
+        messagebox.showinfo(f"Προσοχή!!", f"Έχεις ανοιχτό το παράθυρο {my_window}.. \nΚλείσε το παράθυρο για να δεις τον πίνακα βαθμολογίας!!")
     else:
-        settings.counter_rank += 1
-        if settings.counter_rank > 1:
-            messagebox.showinfo("Προσοχή!!", "Η βαθμολογία είναι ήδη ανοιχτό!!!")
-        else:
-            rank_button.rank()
-        pass
-
+        my_window = "βαθμολογίας"
+        settings.open_window = 1
+        rank_button.rank()
 
 def questions():
-    if settings.counter_toplevel_rank == 1:
-        messagebox.showinfo("Προσοχή!!", "Δώσε το όνομά σου για να αποθηκευτεί η βαθμολογία σου!!!")
+    global my_window
+    if settings.open_window == 1:
+        messagebox.showinfo(f"Προσοχή!!", f"Έχεις ανοιχτό το παράθυρο {my_window}.. \nΚλείσε το παράθυρο για να επεξεργαστείς τις ερωτήσεις!!")
     else:
-        settings.counter_question += 1
-        # Θα βρούμε μια λίστα με όλες τις ερωτήσεις και απαντήσεις όπου θα μπορούμε να την επεξεργαστούμε
-        if settings.counter_question > 1:
-            messagebox.showinfo("Προσοχή!!", "Είναι ήδη ανοιχτό!!!")
-        else:
-            question_button_questions()
-
+        my_window = "ερωτήσεις"
+        settings.open_window = 1
+        question_button_questions()
 
 # αρχική κεντρική οθόνη
 root = Tk()
@@ -61,10 +54,6 @@ root.resizable(False, False)
 my_canvas.pack(fill = "both",expand = True)
 my_canvas.create_image(0,0,image = img, anchor ="nw")
 
-settings.counter_question = 0
-settings.counter_game = 0
-settings.counter_rank = 0
-settings.counter_toplevel_rank = 0
 
 # Κουμπί για νέο παιχνίδι
 btn_new_game = Button(root, text="New Game", command=millioner,height = 2, width = 20)

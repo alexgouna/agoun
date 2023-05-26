@@ -151,7 +151,8 @@ class MillionaireGame(tk.Toplevel):
         self.mainloop()
 
     def close(self):
-        settings.counter_game = 0
+        settings.open_window = 0
+        # settings.counter_game = 0
         self.destroy()
 
 

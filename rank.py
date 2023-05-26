@@ -17,7 +17,8 @@ def new_rank(counter):
     settings.counter_game = 0
 
     def close():
-        settings.counter_toplevel_rank = 0
+        settings.open_window = 0
+        # settings.counter_toplevel_rank = 0
         toplevel_rank.destroy()
     toplevel_rank.protocol("WM_DELETE_WINDOW", close)
 

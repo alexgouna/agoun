@@ -16,7 +16,8 @@ def rank():
     root_rank.title("Rank")
 
     def close():
-        settings.counter_rank = 0
+        settings.open_window = 0
+        # settings.counter_rank = 0
         root_rank.destroy()
 
     root_rank.protocol("WM_DELETE_WINDOW", close)

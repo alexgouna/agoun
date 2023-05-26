@@ -17,7 +17,8 @@ def questions():
     root_questions.resizable(False, False)
 
     def close():
-        settings.counter_question = 0
+        settings.open_window = 0
+        # settings.counter_question = 0
         root_questions.destroy()
     root_questions.protocol("WM_DELETE_WINDOW", close)
 
