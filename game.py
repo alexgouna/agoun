@@ -1,5 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+import time
 import rank
 import millioner_button
 import settings
@@ -30,12 +31,34 @@ class MillionaireGame(tk.Toplevel):
     def setup_main_screen_with_prompt(self):
         self.main_logo_frame = tk.Frame(self.main_frame, bg="purple")
         self.main_logo_frame.pack(fill="both", expand=True)
+        self.left_frame = tk.Frame(self.main_logo_frame, bg="green")
+        self.right_frame = tk.Frame(self.main_logo_frame, bg="red")
+        self.left_frame.pack(side="left", fill="both")
+        self.right_frame.pack(side="right", fill="both")
         img = Image.open('assets/center.png')
-        img = img.resize((250, 250))
+        img = img.resize((400, 300))
         self.logo_image = ImageTk.PhotoImage(img)
-        self.logo_button = tk.Button(self.main_logo_frame, image=self.logo_image, bg="black", bd=0)
+        self.logo_button = tk.Button(self.right_frame, image=self.logo_image, bg="black", bd=0)
         self.logo_button.pack(fill="both", expand=True)
         self.setup_question_prompt(self.question[0])
+        self.set_timer()
+
+    def set_timer(self):
+        global my_timer
+        my_timer = 6000
+        def update():
+            global my_timer
+            my_timer = my_timer - 1
+            self.my_timer_lbl.configure(text=round(my_timer/100))
+            if my_timer < 6000:
+                # schedule next update 1 second later
+                self.my_timer_lbl.after(10, update)
+
+        self.my_timer_lbl = tk.Label(self.left_frame, text=round(my_timer/100))
+        self.my_timer_lbl.pack()
+
+        self.after(1000, update)  # start the update 1 second later
+
 
     def setup_answers(self):
         self.main_questions_frame = tk.Frame(self.main_frame, bg="yellow")
