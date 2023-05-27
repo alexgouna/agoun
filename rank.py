@@ -16,7 +16,7 @@ def new_rank(counter):
 
     img = Image.open('assets\millioner_logo.jpg').resize((400, 400))
 
-    transparency=60
+    transparency=40
     img_transparent = img.copy()
     img_transparent.putalpha(int(255*(transparency/100)))
 
@@ -40,27 +40,15 @@ def new_rank(counter):
         conn.close()
         close()
 
-
-    # lbl_main = Label(toplevel_rank,text=f"Congratulation!! \nYour score is {counter}")
-    # lbl_name = Label(toplevel_rank,text="Name: ")
-    # e = Entry(toplevel_rank)
-    # e.insert(0, "")
-    # btn_submit = Button(toplevel_rank, text="Submit", command=lambda:submit(e.get(), counter), width =50, font=("Arial",12))
-
-    # lbl_main.grid(row=0, column=0, columnspan=2)
-    # lbl_name.grid(row=1,column=0)
-    # e.grid(row=1,column=1)
-    # btn_submit.grid(row=2,column=0,columnspan=2)
-
-    canvas_main = my_canvas.create_text(85, 20, text=f"Game over!!!", anchor='nw', fill='black',font=("Arial",30,'bold'))
-    canvas_main = my_canvas.create_text(85, 70, text=f"Your score is {counter}", anchor='nw', fill='black', font=("Arial", 20, 'bold'))
-    canvas_name = my_canvas.create_text(85, 155, text=f"Name:  ", anchor='nw', fill='black',font=("Arial",20,'bold'))
+    canvas_main = my_canvas.create_text(50, 20, text=f"Game over!!!", anchor='nw', fill='black',font=("Arial",40,'bold'))
+    canvas_main = my_canvas.create_text(70, 80, text=f"Your score is {counter}", anchor='nw', fill='black', font=("Arial", 30, 'bold'))
+    canvas_name = my_canvas.create_text(80, 165, text=f"Name:  ", anchor='nw', fill='black',font=("Arial",25,'bold'))
 
     e = Entry(my_canvas)
     e.insert(0, "")
     btn_submit = Button(my_canvas, text="Submit", command=lambda:submit(e.get(), counter), width =25, font=("Arial",12))
-    my_canvas.create_window(195, 160, anchor="nw", window=e)
-    my_canvas.create_window(85, 195, anchor="nw", window=btn_submit)
+    my_canvas.create_window(190, 180, anchor="nw", window=e)
+    my_canvas.create_window(80, 205, anchor="nw", window=btn_submit)
 
 
 
