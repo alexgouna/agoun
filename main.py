@@ -12,7 +12,7 @@ from tkinter import messagebox
 
 settings.open_window = 0
 
-# Εδώ αρχίζει το παιχνίδι!!
+# Εδώ αρχίζει το παιχνίδι!!!!
 def millioner():
     if settings.open_window == 1:
         messagebox.showinfo(f"Προσοχή!!", f"Έχεις ανοιχτό το παράθυρο {settings.my_window}.. \nΚλείσε το παράθυρο για να ξεκινήσει το παιχνίδι!!")
