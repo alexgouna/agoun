@@ -60,7 +60,7 @@ def helppc(self_question):
             percent_list[i] = 0
         total = total + percent_list[i]
     for i in range(4):
-        percent_list[i] = round((percent_list[i]*(100-adv))/(total),2)
+        percent_list[i] = round((percent_list[i]*(100-adv))/(total), 2)
     percent_list[correct_answer-1] = percent_list[correct_answer-1] + adv
 
     plt.title(self_question[0])
