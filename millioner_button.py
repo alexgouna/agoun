@@ -7,20 +7,32 @@ from tkinter import messagebox
 from PIL import ImageTk, Image
 import settings
 global my_selection_question
+import matplotlib.pyplot as plt
 
 
 
 # help 50/50
-def help5050(question):
+def help5050(self_question):
     # Παίρνεις μία λίστα question.
     # Επιλέγεις δύο τυχαίες από τις λάθος απαντήσεις και επιστρέφεις την ίδια λίστα με 0 στη θέση αυτών των απαντήσεων
     # ΠΧ. από ('Ερώτηση δυσκολίας: easy σειρά: 5', 'Α', 'Β', 'Γ', 'Δ', 'Β', 'easy')
     # επιστρέφεις ('Ερώτηση δυσκολίας: easy σειρά: 5', 'Α', 'Β', 0, 0, 'Β', 'easy')
-    pass
+    ans=[1,2,3,4]
+    question =[]
+    for i in self_question:
+        question.append(i)
+    for i in range(1,5):
+        if question[i]==question[5]:
+            ans.pop(i-1)
+            ans.pop(random.randrange(len(ans)))
+            break
+    for i in ans:
+        question[i] = ""
+    return question
 
 
 # help2 PC propose an answer
-def helppc(question):
+def helppc(self_question):
     # Δώσε μία πιθανή απάντηση με ποσοστό επιτυχίας.
     # Δεν είναι υποχρεωτικό να επιστρέψει τη σωστή απάντηση
     # Αν είναι εύκολη δώσε ένα πλεονέκτημα στη σωστή απάντηση 35%
@@ -31,11 +43,39 @@ def helppc(question):
     # Β = 18% + 35%(πλεονέκτημα) = 53%
     # Γ = 12%
     # Δ = 14%
-    pass
+    percent_list=[]
+    total = 0
+    if self_question[6]=="easy":
+        adv = 40
+    elif self_question[6]=="medium":
+        adv = 30
+    else:
+        adv = 15
+    for correct_answer in range(1,5):
+        if self_question[correct_answer]==self_question[5]:
+            break
+    for i in range(4):
+        percent_list.append(random.randrange(0, 100))
+        if len(self_question[i+1]) == 0:
+            percent_list[i] = 0
+        total = total + percent_list[i]
+    for i in range(4):
+        percent_list[i] = round((percent_list[i]*(100-adv))/(total),2)
+    percent_list[correct_answer-1] = percent_list[correct_answer-1] + adv
 
-def helpchange(question):
+    plt.title(self_question[0])
+    plt.bar(("A","B","C","D"),percent_list)
+    plt.show()
+
+def helpchange(self_question):
     # Αλλάζει την ερώτηση με την επόμενη από την ίδια λίστα επιπέδου δυσκολίας
-    pass
+    if self_question[6]=="easy":
+        return settings.questions_easy[5]
+    elif self_question[6]=="medium":
+        return settings.questions_medium[5]
+    else:
+        return settings.questions_hard[5]
+
 
 
 
