@@ -9,6 +9,7 @@ def rank():
     root_rank = Toplevel()
     root_rank.geometry("600x426")
     root_rank.title("Rank")
+    root_rank.resizable(False, False)
 
     def close():
         settings.open_window = 0
