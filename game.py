@@ -1,13 +1,11 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-
 import rank
 import millioner_button
 import settings
 
 class MillionaireGame(tk.Toplevel):
     def __init__(self, master):
-        # super().__init__()
         tk.Toplevel.__init__(self, master)
         self.my_timer = 6000
         self.total_time = 0
@@ -16,12 +14,10 @@ class MillionaireGame(tk.Toplevel):
         self.title("Who Wants to Be a Millionaire")
         self.geometry('1280x720')
         self.configure(background='black')
-        # this doesn't update sidebar width for now
         self.main_width = 900
         self.sidebar_width = 1280 - self.main_width
         self.setup_main_screen()
         self.setup_sidebar_screen()
-        # bind close
         self.protocol("WM_DELETE_WINDOW", self.close)
 
     def setup_main_screen(self):
@@ -29,9 +25,6 @@ class MillionaireGame(tk.Toplevel):
         self.main_frame.pack(side="left", fill="both", expand=True)
         self.setup_main_screen_with_prompt()
         self.setup_answers()
-        print(self.question)
-        print(self.total_time)
-        print(self.counter)
 
     def setup_main_screen_with_prompt(self):
         self.main_logo_frame = tk.Frame(self.main_frame, bg="black")
@@ -97,9 +90,6 @@ class MillionaireGame(tk.Toplevel):
         settings.my_window = "βαθμολογίας"
         self.destroy()
         my_score= round(prizes[self.counter]/(self.total_time/100))
-        print(self.question)
-        print(self.total_time)
-        print(self.counter)
         rank.new_rank(my_score)
 
     def my_answer(self, answer):
