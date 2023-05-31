@@ -43,8 +43,8 @@ class MillionaireGame(tk.Toplevel):
         img = Image.open('assets/center.png')
         img = img.resize((532, 399))
         self.logo_image = ImageTk.PhotoImage(img)
-        self.logo_button = tk.Button(self.right_frame, image=self.logo_image, bg="black", bd=0)
-        self.logo_button.pack(fill="both", expand=True)
+        self.logo_label = tk.Label(self.right_frame, image=self.logo_image, bg="black", bd=0)
+        self.logo_label.pack(fill="both", expand=True)
         self.setup_question_prompt(self.question[0])
         self.set_timer()
 
