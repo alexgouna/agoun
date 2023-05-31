@@ -1,14 +1,9 @@
 from tkinter import *
-import random
-import time
 import sqlite3
 from tkinter import ttk
-from tkinter import messagebox
-from PIL import ImageTk, Image
 import settings
 
 global my_selection_question
-
 
 def rank():
     root_rank = Toplevel()
@@ -17,7 +12,6 @@ def rank():
 
     def close():
         settings.open_window = 0
-        # settings.counter_rank = 0
         root_rank.destroy()
 
     root_rank.protocol("WM_DELETE_WINDOW", close)

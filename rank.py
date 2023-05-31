@@ -1,25 +1,24 @@
 from tkinter import *
-import random
-import time
 import sqlite3
-from tkinter import messagebox
 from PIL import ImageTk, Image
 import settings
+
 global my_selection_question
+
 
 def new_rank(counter):
     toplevel_rank = Toplevel()
     toplevel_rank.geometry("400x400")
     toplevel_rank.title("My rank")
+    toplevel_rank.resizable(False, False)
 
     my_canvas = Canvas(toplevel_rank, width=400, height=400)
 
     img = Image.open('assets\millioner_logo.jpg').resize((400, 400))
 
-    transparency=40
+    transparency = 40
     img_transparent = img.copy()
-    img_transparent.putalpha(int(255*(transparency/100)))
-
+    img_transparent.putalpha(int(255 * (transparency / 100)))
 
     img = ImageTk.PhotoImage(img_transparent)
 
@@ -30,9 +29,10 @@ def new_rank(counter):
     def close():
         settings.open_window = 0
         toplevel_rank.destroy()
+
     toplevel_rank.protocol("WM_DELETE_WINDOW", close)
 
-    def submit(name,counter):
+    def submit(name, counter):
         conn = sqlite3.connect('millionerdb.db')
         c = conn.cursor()
         c.execute(f"INSERT INTO rank_table (name,score) VALUES ('{name}','{counter}')")
@@ -40,16 +40,17 @@ def new_rank(counter):
         conn.close()
         close()
 
-    canvas_main = my_canvas.create_text(50, 20, text=f"Game over!!!", anchor='nw', fill='black',font=("Arial",40,'bold'))
-    canvas_main = my_canvas.create_text(70, 80, text=f"Your score is {counter}", anchor='nw', fill='black', font=("Arial", 30, 'bold'))
-    canvas_name = my_canvas.create_text(80, 165, text=f"Name:  ", anchor='nw', fill='black',font=("Arial",25,'bold'))
+    canvas_main = my_canvas.create_text(50, 20, text=f"Game over!!!", anchor='nw', fill='black',
+                                        font=("Arial", 40, 'bold'))
+    canvas_main = my_canvas.create_text(70, 80, text=f"Your score is {counter}", anchor='nw', fill='black',
+                                        font=("Arial", 30, 'bold'))
+    canvas_name = my_canvas.create_text(80, 165, text=f"Name:  ", anchor='nw', fill='black', font=("Arial", 25, 'bold'))
 
     e = Entry(my_canvas)
     e.insert(0, "")
-    btn_submit = Button(my_canvas, text="Submit", command=lambda:submit(e.get(), counter), width =25, font=("Arial",12))
+    btn_submit = Button(my_canvas, text="Submit", command=lambda: submit(e.get(), counter), width=25,
+                        font=("Arial", 12))
     my_canvas.create_window(190, 180, anchor="nw", window=e)
     my_canvas.create_window(80, 205, anchor="nw", window=btn_submit)
-
-
 
     toplevel_rank.mainloop()
