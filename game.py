@@ -56,7 +56,7 @@ class MillionaireGame(tk.Toplevel):
         self.left_bottom_frame.pack(side="bottom", fill="both")
         self.live_text_label = tk.Label(self.left_bottom_frame, text="My lives", fg="red", bg="black", font=('Arial', 30))
         self.live_text_label.pack(side="top")
-        img = Image.open('assets/millioner_logo.jpg')
+        img = Image.open('assets/live.png')
         img = img.resize((60, 60))
         self.live_image = ImageTk.PhotoImage(img)
         for i in range(self.lives):
