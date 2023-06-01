@@ -6,7 +6,7 @@ import settings
 global my_selection_question
 
 
-def new_rank(counter):
+def new_rank(prize,total_time,mo,my_score):
     toplevel_rank = Toplevel()
     toplevel_rank.geometry("400x400")
     toplevel_rank.title("My rank")
@@ -32,23 +32,23 @@ def new_rank(counter):
 
     toplevel_rank.protocol("WM_DELETE_WINDOW", close)
 
-    def submit(name, counter):
+    def submit(name, my_score,prize,total_time,mo):
         conn = sqlite3.connect('millionerdb.db')
         c = conn.cursor()
-        c.execute(f"INSERT INTO rank_table (name,score) VALUES ('{name}','{counter}')")
+        c.execute(f"INSERT INTO rank_table (name,score,amount,totaltime,mo) VALUES ('{name}','{my_score}','{prize}','{total_time}','{mo}')")
         conn.commit()
         conn.close()
         close()
 
     canvas_main = my_canvas.create_text(50, 20, text=f"Game over!!!", anchor='nw', fill='black',
                                         font=("Arial", 40, 'bold'))
-    canvas_main = my_canvas.create_text(70, 80, text=f"Your score is {counter}", anchor='nw', fill='black',
+    canvas_main = my_canvas.create_text(70, 80, text=f"Your score is {my_score}", anchor='nw', fill='black',
                                         font=("Arial", 30, 'bold'))
     canvas_name = my_canvas.create_text(80, 165, text=f"Name:  ", anchor='nw', fill='black', font=("Arial", 25, 'bold'))
 
     e = Entry(my_canvas)
     e.insert(0, "")
-    btn_submit = Button(my_canvas, text="Submit", command=lambda: submit(e.get(), counter), width=25,
+    btn_submit = Button(my_canvas, text="Submit", command=lambda: submit(e.get(), my_score, prize, total_time, mo), width=25,
                         font=("Arial", 12))
     my_canvas.create_window(190, 180, anchor="nw", window=e)
     my_canvas.create_window(80, 205, anchor="nw", window=btn_submit)
