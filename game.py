@@ -118,7 +118,7 @@ class MillionaireGame(tk.Toplevel):
 
     def game_over(self, my_counter):
         prizes = [0, 25, 50, 100, 200, 300, 500, 1000, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000]
-        settings.my_window = "βαθμολογίας"
+        settings.my_window = "βαθμολογίας "
         self.destroy()
         print(self.total_safe_time)
         if my_counter!=5 or my_counter!=10:
