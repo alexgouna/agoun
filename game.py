@@ -50,7 +50,7 @@ class MillionaireGame(tk.Toplevel):
 
     def stop_game(self):
         self.stop_game_button = tk.Button(self.left_top_frame, text="Stop game", fg="white", font=("Arial", 30),
-                                          bg="black", bd=1, command=lambda: self.game_over(self.counter))
+                                          bg="grey", bd=2, command=lambda: self.game_over(self.counter))
         self.stop_game_button.pack(side="left")
 
     def my_lives(self):
@@ -120,7 +120,12 @@ class MillionaireGame(tk.Toplevel):
         prizes = [0, 25, 50, 100, 200, 300, 500, 1000, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000]
         settings.my_window = "βαθμολογίας"
         self.destroy()
-        if self.total_safe_time != 0:
+        print(self.total_safe_time)
+        if my_counter!=5 or my_counter!=10:
+            self.total_safe_time = self.total_time
+
+
+        if self.total_safe_time != 0 and my_counter!=0:
             my_score = round(prizes[my_counter] / (self.total_safe_time / 100))
             rank.new_rank(prizes[my_counter], round(self.total_safe_time / 100),
                           round(self.total_safe_time / my_counter) / 100, my_score)
