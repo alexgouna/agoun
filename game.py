@@ -1,7 +1,8 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 import rank
-import millioner_button
+import millioner_button as millioner_button
+
 import settings
 
 
@@ -229,9 +230,9 @@ class MillionaireGame(tk.Toplevel):
         self.prizes_frame = tk.Frame(self.sidebar_frame, bg="blue")
         self.prizes_frame.pack(side="bottom", fill="both", expand=True)
         self.prize_labels = []
-        prizes = ['$1,000,000', '$500,000', '$250,000', '$100,000',
-                  '$50,000', '$25,000', '$10,000', '$5,000', '$1,000',
-                  '$500', '$300', '$200', '$100', '$50', '$25']
+        prizes = ['1,000,000 €', '500,000 €', '250,000 €', '100,000 €',
+                  '50,000 €', '25,000 €', '10,000 €', '5,000 €', '1,000 €',
+                  '500 €', '300 €', '200 €', '100 €', '50 €', '25 €']
         my_counter = len(prizes)
         for prize in prizes:
             if my_counter == self.counter:
