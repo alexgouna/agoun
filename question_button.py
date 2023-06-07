@@ -179,10 +179,14 @@ def questions():
         conn.close()
         clear()
 
+
+
+    btn_new = Button(root_questions, text="New", command=clear_entries, width=15)
     btn_save = Button(root_questions, text="Save", command=save, width=15)
     btn_delete_one = Button(root_questions, text="Delete", command=lambda: delete("SELECTED"), width=15)
     btn_delete_all = Button(root_questions, text="Delete all", command=lambda: delete("ALL"), width=15)
 
+    btn_new.grid(row=1, column=8)
     btn_save.grid(row=2, column=8)
     btn_delete_one.grid(row=3, column=8)
     btn_delete_all.grid(row=4, column=8)

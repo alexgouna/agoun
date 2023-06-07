@@ -2,12 +2,13 @@ from tkinter import *
 import sqlite3
 from tkinter import ttk
 import settings
+from tkinter import messagebox
 
 global my_selection_question
 
 def rank():
     root_rank = Toplevel()
-    root_rank.geometry("600x426")
+    root_rank.geometry("600x450")
     root_rank.title("Rank")
     root_rank.resizable(False, False)
 
@@ -55,3 +56,14 @@ def rank():
     tree_rank.grid(row=0, columnspan=10)
     conn.commit()
     conn.close()
+    def reset():
+        if messagebox.askyesno("Warming", "Θαδιαγραφούν όλες οι βαθμολογίες\nΘες να συνεχίσεις στη διαγραφή;")==True:
+            conn = sqlite3.connect('millionerdb.db')
+            c = conn.cursor()
+            c.execute("DELETE FROM rank_table")
+            conn.commit()
+            conn.close()
+            close()
+
+    btn_reset = Button(root_rank,text="Reset the Ranks",command=reset,width = 50)
+    btn_reset.grid(row=1,column=0,columnspan=10 )

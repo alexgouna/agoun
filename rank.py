@@ -40,11 +40,11 @@ def new_rank(prize,total_time,mo,my_score):
         conn.close()
         close()
 
-    canvas_main = my_canvas.create_text(50, 20, text=f"Game over!!!", anchor='nw', fill='black',
+    my_canvas.create_text(50, 20, text=f"Game over!!!", anchor='nw', fill='black',
                                         font=("Arial", 40, 'bold'))
-    canvas_main = my_canvas.create_text(70, 80, text=f"Your score is {my_score}", anchor='nw', fill='black',
+    my_canvas.create_text(70, 80, text=f"Your score is {my_score}", anchor='nw', fill='black',
                                         font=("Arial", 30, 'bold'))
-    canvas_name = my_canvas.create_text(80, 165, text=f"Name:  ", anchor='nw', fill='black', font=("Arial", 25, 'bold'))
+    my_canvas.create_text(80, 165, text=f"Name:  ", anchor='nw', fill='black', font=("Arial", 25, 'bold'))
 
     e = Entry(my_canvas)
     e.insert(0, "")
