@@ -84,7 +84,8 @@ def questions():
     e_answer_c = Entry(root_questions)
     e_answer_d = Entry(root_questions)
     e_correct_answer = Entry(root_questions)
-    e_difficulty = Entry(root_questions)
+    combo = ttk.Combobox(root_questions, state="readonly", values=["easy", "medium", "difficult"])
+
 
     e_question.grid(row=1, column=1, columnspan=6, pady=4, sticky=W + E)
     e_answer_a.grid(row=2, column=1, columnspan=6, pady=4, sticky=W + E)
@@ -92,7 +93,8 @@ def questions():
     e_answer_c.grid(row=4, column=1, columnspan=6, pady=4, sticky=W + E)
     e_answer_d.grid(row=5, column=1, columnspan=6, pady=4, sticky=W + E)
     e_correct_answer.grid(row=6, column=1, columnspan=6, pady=4, sticky=W + E)
-    e_difficulty.grid(row=7, column=1, columnspan=6, pady=4, sticky=W + E)
+    combo.grid(row=7, column=1, columnspan=6, pady=4, sticky=W + E)
+    combo.set("easy")
 
     def test_if_question_exist(my_question):
         conn = sqlite3.connect('millionerdb.db')
@@ -115,7 +117,7 @@ def questions():
         e_answer_c.delete(0, END)
         e_answer_d.delete(0, END)
         e_correct_answer.delete(0, END)
-        e_difficulty.delete(0, END)
+        combo.set("easy")
 
     def clear():
         for record in tree_questions.get_children():
@@ -129,7 +131,7 @@ def questions():
             c = conn.cursor()
             c.execute("INSERT INTO questions_table VALUES (?,?,?,?,?,?,?)",
                       (e_question.get(), e_answer_a.get(), e_answer_b.get(), e_answer_c.get(), e_answer_d.get(),
-                       e_correct_answer.get(), e_difficulty.get()))
+                       e_correct_answer.get(), combo.get()))
             conn.commit()
             conn.close()
         else:
@@ -144,7 +146,7 @@ def questions():
                 c.execute(
                     "UPDATE questions_table SET question='" + e_question.get() + "' , answera='" + e_answer_a.get() +
                     "', answerb='" + e_answer_b.get() + "', answerc='" + e_answer_c.get() + "', answerd='" + e_answer_d.get() +
-                    "', correct_answer='" + e_correct_answer.get() + "', difficulty='" + e_difficulty.get() +
+                    "', correct_answer='" + e_correct_answer.get() + "', difficulty='" + combo.get() +
                     "' WHERE question='" + str(e_question.get()) + "'")
                 conn.commit()
                 conn.close()
@@ -164,7 +166,8 @@ def questions():
         e_answer_c.insert(0, selected_values[3])
         e_answer_d.insert(0, selected_values[4])
         e_correct_answer.insert(0, selected_values[5])
-        e_difficulty.insert(0, selected_values[6])
+        combo.set(selected_values[6])
+
 
     def delete(line):
         conn = sqlite3.connect('millionerdb.db')
@@ -190,6 +193,7 @@ def questions():
     btn_save.grid(row=2, column=8)
     btn_delete_one.grid(row=3, column=8)
     btn_delete_all.grid(row=4, column=8)
+
 
     tree_questions.bind("<Double-1>", select_record)
 
