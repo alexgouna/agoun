@@ -92,8 +92,8 @@ def my_questions():
     # 5 τυχαίες ερωτήσεις από τη βάση δεδομένων + 1 επιπλέον για περίπτωση βοήθειας αλλαγής ερώτησης
     for i in range(6):
         random_num1 = random.randrange(0, len(questions_easy) - 1)
-        random_num2 = random.randrange(0, len(questions_easy) - 1)
-        random_num3 = random.randrange(0, len(questions_easy) - 1)
+        random_num2 = random.randrange(0, len(questions_medium) - 1)
+        random_num3 = random.randrange(0, len(questions_hard) - 1)
         questions_temp1.append(questions_easy[random_num1])
         questions_temp2.append(questions_medium[random_num2])
         questions_temp3.append(questions_hard[random_num3])
